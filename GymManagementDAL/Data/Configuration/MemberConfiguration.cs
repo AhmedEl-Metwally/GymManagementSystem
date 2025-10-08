@@ -8,7 +8,7 @@ namespace GymManagementDAL.Data.Configuration
     {
         public new void Configure(EntityTypeBuilder<Member> builder)
         {
-            builder.Property(CA =>CA.CreatedAt).HasColumnName("JoinDate").HasDefaultValue("GETDATE()");
+            builder.Property(CA =>CA.CreatedAt).HasColumnName("JoinDate").HasDefaultValueSql("GETDATE()");
             base.Configure(builder);    
         }
     }
