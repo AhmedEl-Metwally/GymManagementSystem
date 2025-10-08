@@ -1,4 +1,6 @@
 using GymManagementDAL.Data.Context;
+using GymManagementDAL.Repositories.Implementation;
+using GymManagementDAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,9 @@ builder.Services.AddDbContext<GymDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
 });
+
+builder.Services.AddScoped<IMemberRepository,MemberRepository>();
+builder.Services.AddScoped<ITrainerRepository,TrainerRepository>();
 
 var app = builder.Build();
 
