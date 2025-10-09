@@ -13,8 +13,9 @@ builder.Services.AddDbContext<GymDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
 });
 
-builder.Services.AddScoped<IMemberRepository,MemberRepository>();
-builder.Services.AddScoped<ITrainerRepository,TrainerRepository>();
+
+builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
+
 
 var app = builder.Build();
 
