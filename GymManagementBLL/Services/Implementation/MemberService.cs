@@ -28,6 +28,43 @@ namespace GymManagementBLL.Services.Implementation
         }
 
 
+        public bool CreateMember(CreateMemberViewModel createMember)
+        {
+            try
+            {
+                var emailExists = _memberRepository.GetAll(E => E.Email == createMember.Email).Any();
+                var phoneExists = _memberRepository.GetAll(P => P.Phone == createMember.Phone).Any();
+                if (emailExists || phoneExists)
+                    return false;
+
+                var member = new Member()
+                {
+                    Phone = createMember.Phone,
+                    Name = createMember.Name,
+                    Email = createMember.Email,
+                    Gender = createMember.Gender,
+                    DateOfBirth = createMember.DateOfBirth,
+                    Address = new Address()
+                    {
+                        Street = createMember.Street,
+                        City = createMember.City,
+                        BuildingNumber = createMember.BuildingNumber,
+                    },
+                    HealthRecord = new HealthRecord()
+                    {
+                        Height = createMember.HealthRecordViewModel.Height,
+                        Weight = createMember.HealthRecordViewModel.Weight,
+                        BloodType = createMember.HealthRecordViewModel.BloodType,
+                        Note = createMember.HealthRecordViewModel.Note,
+                    },
+                };
+                return _memberRepository.Add(member) > 0;
+            }
+            catch (Exception) 
+            {
+                return false;
+            }
+        }
 
 
 
