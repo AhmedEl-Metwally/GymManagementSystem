@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ViewModels\MemberViewModels\nnzkrs2x.ol5~" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GymManagementDAL\GymManagementDAL.csproj" />
   </ItemGroup>
 

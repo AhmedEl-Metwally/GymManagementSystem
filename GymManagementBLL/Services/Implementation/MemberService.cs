@@ -5,7 +5,11 @@ using GymManagementDAL.Repositories.Interfaces;
 
 namespace GymManagementBLL.Services.Implementation
 {
-    public class MemberService(IGenericRepository<Member> _memberRepository) : IMemberService
+    public class MemberService( 
+                                IGenericRepository<Member> _memberRepository,
+                                IGenericRepository<MemberPlan> _memberPlanRepository,
+                                IPlanRepository _planRepository
+                              ) : IMemberService
     {
         public IEnumerable<MemberViewModel> GetAllMembers()
         {
@@ -66,8 +70,34 @@ namespace GymManagementBLL.Services.Implementation
             }
         }
 
+        public MemberViewModel? GetMemberDetails(int MemberId)
+        {
+            var Member = _memberRepository.GetById(MemberId);
+            if(Member is null)
+                return null;
 
+            var viweModel = new MemberViewModel()
+            {
+                Name = Member.Name,
+                Phone = Member.Phone,
+                Email = Member.Email,
+                Photo = Member.Photo,
+                Gender = Member.Gender.ToString(),
+                DateOfBirth = Member.DateOfBirth.ToShortDateString(),
+                Address = $"{Member.Address.BuildingNumber}-{Member.Address.Street}-{Member.Address.City}" 
+            };
 
+            var ActiveMemberPlan = _memberPlanRepository.GetAll(M =>M.MemberId == MemberId && M.Status == "Active").FirstOrDefault();
+            if (ActiveMemberPlan is not null)
+            {
+                viweModel.MembershipStartDate = ActiveMemberPlan.CreatedAt.ToShortDateString();
+                viweModel.MembershipEndDate = ActiveMemberPlan.EndDate.ToShortDateString();
+                var plan = _planRepository.GetPlanById(ActiveMemberPlan.PlanId);
+                viweModel.PlanName = plan?.Name;
+            }
+
+            return viweModel;
+        }
 
 
 
