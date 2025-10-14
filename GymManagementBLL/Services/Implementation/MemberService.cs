@@ -8,6 +8,7 @@ namespace GymManagementBLL.Services.Implementation
     public class MemberService( 
                                 IGenericRepository<Member> _memberRepository,
                                 IGenericRepository<MemberPlan> _memberPlanRepository,
+                                IGenericRepository<HealthRecord> _healthRecordRepository,
                                 IPlanRepository _planRepository
                               ) : IMemberService
     {
@@ -97,6 +98,21 @@ namespace GymManagementBLL.Services.Implementation
             }
 
             return viweModel;
+        }
+
+        public HealthRecordViewModel? GetHealthRecordDetails(int MemberId)
+        {
+            var HealthRecordRepository = _healthRecordRepository.GetById(MemberId);
+            if (HealthRecordRepository is null)
+                return null;
+
+            return new HealthRecordViewModel()
+            {
+                Height = HealthRecordRepository.Height,
+                Weight = HealthRecordRepository.Weight , 
+                BloodType = HealthRecordRepository.BloodType,
+                Note = HealthRecordRepository.Note
+            };
         }
 
 
