@@ -9,6 +9,7 @@ namespace GymManagementBLL.Services.Implementation
                                 IGenericRepository<Member> _memberRepository,
                                 IGenericRepository<MemberPlan> _memberPlanRepository,
                                 IGenericRepository<HealthRecord> _healthRecordRepository,
+                                IGenericRepository<MemberSession> _memberSessionRepository,
                                 IPlanRepository _planRepository
                               ) : IMemberService
     {
@@ -157,10 +158,36 @@ namespace GymManagementBLL.Services.Implementation
         }
 
 
+        public bool RenewMember(int MemberId)
+        {
+            var Member = _memberRepository.GetById(MemberId);
+            if (Member is null) 
+                return false;
+
+            var HasActiveMemberSessions = _memberSessionRepository
+                                              .GetAll(M =>M.MemberId == MemberId && M.Session.StartDate > DateTime.Now).Any();
+            if(HasActiveMemberSessions)
+                return false;
+
+            var MemberShips = _memberPlanRepository.GetAll( M =>M.MemberId == MemberId);
+            try
+            {
+                if(MemberShips.Any())
+                    foreach(var memberShips in MemberShips)
+                        _memberPlanRepository.Delete(memberShips);
+                return _memberRepository.Delete(Member) >0;    
+            } 
+            catch
+            {
+                return false;
+            }
+
+        }
 
 
         //Help Methods
         private bool IsEmailExists(string email) => _memberRepository.GetAll(E => E.Email == email).Any();
         private bool IsPhoneExists(string phone) => _memberRepository.GetAll(E => E.Phone == phone).Any();
+
     }
 }
