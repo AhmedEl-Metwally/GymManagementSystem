@@ -1,3 +1,5 @@
+using GymManagementBLL.Services.Implementation;
+using GymManagementBLL.Services.Interface;
 using GymManagementDAL.Data.Context;
 using GymManagementDAL.Repositories.Implementation;
 using GymManagementDAL.Repositories.Interfaces;
@@ -15,6 +17,8 @@ builder.Services.AddDbContext<GymDbContext>(options =>
 });
 
 
+builder.Services.AddScoped<IMemberService,MemberService>();
+builder.Services.AddScoped<IPlanService,PlanService>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
 builder.Services.AddScoped<IPlanRepository,PlanRepository>();
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
