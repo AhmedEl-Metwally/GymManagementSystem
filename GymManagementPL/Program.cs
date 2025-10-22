@@ -1,6 +1,7 @@
 using GymManagementBLL.Services.Implementation;
 using GymManagementBLL.Services.Interface;
 using GymManagementDAL.Data.Context;
+using GymManagementDAL.Data.DataSeed;
 using GymManagementDAL.Repositories.Implementation;
 using GymManagementDAL.Repositories.Interfaces;
 using GymManagementDAL.Repositories.UnitOfWorks;
@@ -20,10 +21,11 @@ builder.Services.AddDbContext<GymDbContext>(options =>
 builder.Services.AddScoped<IMemberService,MemberService>();
 builder.Services.AddScoped<IPlanService,PlanService>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
-builder.Services.AddScoped<IPlanRepository,PlanRepository>();
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
 var app = builder.Build();
+
+GymDbContextSeeding.SeedData(app.Services.CreateScope().ServiceProvider.GetRequiredService<GymDbContext>());
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
