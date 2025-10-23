@@ -20,6 +20,7 @@ builder.Services.AddDbContext<GymDbContext>(options =>
 
 builder.Services.AddScoped<IMemberService,MemberService>();
 builder.Services.AddScoped<IPlanService,PlanService>();
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
