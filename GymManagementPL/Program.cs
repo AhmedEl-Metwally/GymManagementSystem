@@ -1,3 +1,4 @@
+using GymManagementBLL.Mapping;
 using GymManagementBLL.Services.Implementation;
 using GymManagementBLL.Services.Interface;
 using GymManagementDAL.Data.Context;
@@ -23,6 +24,7 @@ builder.Services.AddScoped<IPlanService,PlanService>();
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+builder.Services.AddAutoMapper(Mapping => Mapping.AddProfile(new MappingProfile()));
 
 var app = builder.Build();
 

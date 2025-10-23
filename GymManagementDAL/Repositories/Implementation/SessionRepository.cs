@@ -19,5 +19,9 @@ namespace GymManagementDAL.Repositories.Implementation
 
         public int GetCountOfBookedSlots(int sessionId) =>
             _context.MemberSessions.Count(MS => MS.SessionId == sessionId);
+
+        public Session? GetSessionWhithTrainerAndCategory(int SessionId) =>
+            _context.Sessions.Include(S => S.Trainer).Include(S => S.Category).FirstOrDefault(S =>S.Id == SessionId);
+      
     }
 }
