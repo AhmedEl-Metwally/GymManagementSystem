@@ -56,13 +56,60 @@ namespace GymManagementBLL.Services.Implementation
             }
         }
 
+        public UpdateSessionViewModel? GetSessionToUpdate(int SessionId)
+        {
+            var Session = _unitOfWork.SessionRepository.GetById(SessionId);
+            if(!IsSessionAvailableForupdating(Session!))
+                return null;
+            return _mapper.Map<UpdateSessionViewModel>(Session);
+        }
+
+        public bool UpdateSession(UpdateSessionViewModel UpdateSession, int SessionId)
+        {
+            try
+            {
+                var Session = _unitOfWork.SessionRepository.GetById(SessionId);
+                if(!IsSessionAvailableForupdating(Session!))
+                    return false;
+                if(!IsTrainerExists(UpdateSession.TrainerId))
+                    return false;
+                if(!IsDateTimeValid(UpdateSession.StartDate,UpdateSession.EndDate))
+                    return false;
+
+                _mapper.Map(UpdateSession,Session);
+                Session!.UpdatedAt = DateTime.Now;  
+                _unitOfWork.SessionRepository.Update(Session);
+                return _unitOfWork.SaveChange() > 0;
+            }
+            catch 
+            {
+                return false;
+            }
+        }
+
 
 
         // Helper Methods
 
         private bool IsTrainerExists(int TrainerId) => _unitOfWork.GetRepository<Trainer>().GetById(TrainerId) is not null;
-
         private bool IsCategoryExists(int CategoryId) => _unitOfWork.GetRepository<Category>().GetById(CategoryId) is not null;
         private bool IsDateTimeValid(DateTime StartDate, DateTime EndDate) => StartDate < EndDate;
+
+        private bool IsSessionAvailableForupdating(Session session)
+        {
+            if(session is null)
+                return false;
+            if(session.EndDate < DateTime.Now)
+                return false;
+            if(session.StartDate < DateTime.Now)
+                return false;
+
+            var HasActiveBooking = _unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id) >0;
+            if(HasActiveBooking)
+                return false;
+
+            return true;
+        }
+
     }
 }
