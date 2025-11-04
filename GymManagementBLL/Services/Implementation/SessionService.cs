@@ -87,6 +87,21 @@ namespace GymManagementBLL.Services.Implementation
             }
         }
 
+        public bool RemoveSession(int SessionId)
+        {
+            try
+            {
+                var Session = _unitOfWork.SessionRepository.GetById(SessionId);
+                if(!IsSessionAvailableForRemoveing(Session!))
+                    return false;
+                _unitOfWork.SessionRepository.Delete(Session!);
+                return _unitOfWork.SaveChange() >0;    
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
 
         // Helper Methods
@@ -101,11 +116,27 @@ namespace GymManagementBLL.Services.Implementation
                 return false;
             if(session.EndDate < DateTime.Now)
                 return false;
-            if(session.StartDate < DateTime.Now)
+            if(session.StartDate <= DateTime.Now)
                 return false;
 
             var HasActiveBooking = _unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id) >0;
             if(HasActiveBooking)
+                return false;
+
+            return true;
+        }
+
+        private bool IsSessionAvailableForRemoveing(Session session)
+        {
+            if (session is null)
+                return false;
+            if (session.StartDate <= DateTime.Now && session.EndDate > DateTime.Now )
+                return false;
+            if (session.StartDate > DateTime.Now)
+                return false;
+
+            var HasActiveBooking = _unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id) > 0;
+            if (HasActiveBooking)
                 return false;
 
             return true;
