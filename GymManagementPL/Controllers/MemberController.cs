@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GymManagementBLL.Services.Interface;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GymManagementPL.Controllers
 {
-    public class MemberController : Controller
+    public class MemberController(IMemberService _memberService) : Controller
     {
         public ActionResult Index()
         {
-            return View();
+            var member = _memberService.GetAllMembers();
+            return View(member);
         }
 
         public ActionResult GetMember()

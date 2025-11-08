@@ -66,11 +66,10 @@ namespace GymManagementBLL.Mapping
             CreateMap<HealthRecordViewModel,HealthRecord>().ReverseMap();
         }
 
-
         private void MapTrainer()
         {
             CreateMap<CreateTrainerViewModel, Trainer>()
-                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => new Address
+                .ForMember(dest => dest.Address, option => option.MapFrom(src => new Address
                 {
                     BuildingNumber = src.BuildingNumber,
                     Street = src.Street,
@@ -80,9 +79,9 @@ namespace GymManagementBLL.Mapping
             CreateMap<Trainer, TrainerViewModel>();
 
             CreateMap<Trainer, TrainerToUpdateViewModel>()
-                .ForMember(dist => dist.Street, opt => opt.MapFrom(src => src.Address.Street))
-                .ForMember(dist => dist.City, opt => opt.MapFrom(src => src.Address.City))
-                .ForMember(dist => dist.BuildingNumber, opt => opt.MapFrom(src => src.Address.BuildingNumber));
+                .ForMember(dist => dist.Street, option => option.MapFrom(src => src.Address.Street))
+                .ForMember(dist => dist.City, option => option.MapFrom(src => src.Address.City))
+                .ForMember(dist => dist.BuildingNumber, option => option.MapFrom(src => src.Address.BuildingNumber));
 
             CreateMap<TrainerToUpdateViewModel, Trainer>()
             .ForMember(dest => dest.Name, opt => opt.Ignore())
@@ -98,11 +97,11 @@ namespace GymManagementBLL.Mapping
         private void MapPlan()
         {
             CreateMap<Plan, PlanViewModel>();
-            CreateMap<Plan, UpdatePlanViewModel>().ForMember(dest => dest.PlanName, opt => opt.MapFrom(src => src.Name));
+            CreateMap<Plan, UpdatePlanViewModel>().ForMember(dest => dest.PlanName, option => option.MapFrom(src => src.Name));
             CreateMap<UpdatePlanViewModel, Plan>()
            .ForMember(dest => dest.Name, opt => opt.Ignore())
-           .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.Now));
-
+           .ForMember(dest => dest.UpdatedAt, option => option.MapFrom(src => DateTime.Now));
+                
         }
 
     }
