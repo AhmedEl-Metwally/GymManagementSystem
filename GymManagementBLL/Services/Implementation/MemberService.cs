@@ -99,7 +99,7 @@ namespace GymManagementBLL.Services.Implementation
         }
 
 
-        public bool RenewMember(int MemberId)
+        public bool RemoveMember(int MemberId)
         {
             var MemberRepo = _unitOfWork.GetRepository<Member>();
             var MemberPlanRepo = _unitOfWork.GetRepository<MemberPlan>();
@@ -107,9 +107,11 @@ namespace GymManagementBLL.Services.Implementation
             if (Member is null) 
                 return false;
 
-            var HasActiveMemberSessions = _unitOfWork.GetRepository<MemberSession>()
-                                              .GetAll(M =>M.MemberId == MemberId && M.Session.StartDate > DateTime.Now).Any();
-            if(HasActiveMemberSessions)
+            var SessionIds = _unitOfWork.GetRepository<MemberSession>()
+                         .GetAll(M =>M.MemberId == MemberId).Select(M => M.SessionId);
+            var HasFutureSessions = _unitOfWork.GetRepository<Session>()
+                   .GetAll(M => SessionIds.Contains(M.Id) && M.StartDate > DateTime.Now).Any();
+            if (HasFutureSessions)
                 return false;
 
             var MemberShips = MemberPlanRepo.GetAll( M =>M.MemberId == MemberId);
