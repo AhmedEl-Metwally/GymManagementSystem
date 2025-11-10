@@ -5,13 +5,13 @@ namespace GymManagementBLL.ViewModels.MemberViewModels
 {
     public class CreateMemberViewModel
     {
-        [Range(2, 50)]
+        //[StringLength(maximumLength:50, MinimumLength =3)]
         [RegularExpression(@"^[a-zA-Z\s]+$")]
         public string Name { get; set; } = string.Empty;
 
         [EmailAddress]
         [DataType(DataType.EmailAddress)]
-        [Range(5,100)]
+        //[StringLength(maximumLength:100,MinimumLength =5)]
         public string Email { get; set; } = string.Empty;
 
         [Display(Name = "Phone Number")]
@@ -22,11 +22,11 @@ namespace GymManagementBLL.ViewModels.MemberViewModels
 
         public DateOnly DateOfBirth { get; set; }
         public Gender Gender  { get; set; }
-        [Range(1, 200)]
+        //[StringLength(maximumLength: 200, MinimumLength = 1)]
         public int BuildingNumber  { get; set; }
-        [Range(1, 30)]
+        //[StringLength(maximumLength: 30, MinimumLength = 1)]
         public string Street { get; set; } = string.Empty;
-        [Range(1, 30)]
+        //[StringLength(maximumLength: 30, MinimumLength = 1)]
         [RegularExpression(@"^[a-zA-Z\s]+$")]
         public string City { get; set; } = string.Empty;
         [Required]

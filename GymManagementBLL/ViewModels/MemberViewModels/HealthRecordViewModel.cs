@@ -8,7 +8,7 @@ namespace GymManagementBLL.ViewModels.MemberViewModels
         public decimal Height { get; set; }
         [Range(0.1, 500)]
         public decimal Weight { get; set; }
-        [MinLength(3)]
+        //[MinLength(3)]
         public string BloodType { get; set; } = string.Empty;
         public string? Note { get; set; }
 
