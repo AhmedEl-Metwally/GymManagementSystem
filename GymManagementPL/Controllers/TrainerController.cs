@@ -11,9 +11,15 @@ namespace GymManagementPL.Controllers
             return View(trainers);
         }
 
-        public ActionResult GetTrainer()
+        public ActionResult TrainerDetails(int id )
         {
-            return View();
+            if(id <= 0)
+              return RedirectToAction(nameof(Index));
+
+            var trainer = _trainerService.GetTrainerDetails(id);
+            if(trainer is null)
+              return RedirectToAction(nameof(Index));
+            return View(trainer);
         }
 
         public ActionResult CreateTrainer()
