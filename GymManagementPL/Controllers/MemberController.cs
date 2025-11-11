@@ -132,9 +132,9 @@ namespace GymManagementPL.Controllers
         {
             bool Result = _memberService.RemoveMember(id);
             if (Result)
-                TempData["SuccessMessage"] = "Member Update Successfully";
+                TempData["SuccessMessage"] = "Member Deleted Successfully";
             else
-                TempData["ErrorMessage"] = "Member Failed To Updated";
+                TempData["ErrorMessage"] = "Member Failed to Delete";
 
             return RedirectToAction(nameof(Index));
         }
