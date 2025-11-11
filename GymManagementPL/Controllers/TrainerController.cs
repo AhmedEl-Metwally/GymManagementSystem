@@ -50,5 +50,37 @@ namespace GymManagementPL.Controllers
                 TempData["ErrorMessage"] = "Trainer Failed To Create , Check Phone And Email";
             return RedirectToAction(nameof(Index));
         }
+
+        public ActionResult TrainerEdit(int id) 
+        {
+            if(id <= 0)
+            {
+                TempData["ErrorMessage"] = "Id of Trainer Can Not Be 0 OR Negative Number";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var trainer = _trainerService.GetTrainerToUpdate(id);
+            if(trainer is null)
+            {
+                TempData["ErrorMessage"] = " Trainer Not Found";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(trainer);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult TrainerEdit([FromRoute]int id,TrainerToUpdateViewModel trainerToUpdate)
+        {
+            if (!ModelState.IsValid)
+                return View(nameof(trainerToUpdate));
+
+            bool result = _trainerService.UpdateTrainerDetails(trainerToUpdate,id);
+            if (result)
+                TempData["SuccessMessage"] = "Trainer Update Successfully";
+            else
+                TempData["ErrorMessage"] = "Trainer Failed To Updated";
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

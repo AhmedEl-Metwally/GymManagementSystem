@@ -5,15 +5,14 @@ namespace GymManagementBLL.ViewModels.TrainerViewModels
 {
     public class TrainerToUpdateViewModel
     {
+        public string Name { get; set; } = string.Empty;
         [Required(ErrorMessage = "Email Is Required")]
         [EmailAddress(ErrorMessage = "Invalid email format")]
-
         public string Email { get; set; } = null!;
 
         [Required(ErrorMessage = "Phone Number Is Required")]
         [Phone(ErrorMessage = "Invalid phone number")]
         [RegularExpression(@"^(010|011|012|015)\d{8}$", ErrorMessage = "Phone number must be a valid Egyptian mobile number")]
-
         public string Phone { get; set; } = null!;
 
         [Required(ErrorMessage = "Building Number Is Required")]
