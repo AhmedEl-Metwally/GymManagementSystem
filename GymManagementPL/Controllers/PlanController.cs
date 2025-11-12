@@ -61,5 +61,18 @@ namespace GymManagementPL.Controllers
                 TempData["ErrorMessage"] = "Plan Failed To Update";
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Activate(int id)
+        { 
+            bool result = _planService.ToggleStatus(id);
+            if(result)
+                TempData["SuccessMessage"] = "Plan Status Changed";
+            else
+                TempData["ErrorMessage"] = "Failed TO Change Plan";
+            return RedirectToAction(nameof(Index));
+
+        }
     }
 }
