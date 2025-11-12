@@ -7,7 +7,8 @@ namespace GymManagementBLL.ViewModels.PlanViewModels
     {
         [StringLength(50)]
         public string PlanName { get; set; } = string.Empty;
-        [StringLength(50)]
+        [Required(ErrorMessage = "Description is Required")]
+        [StringLength(100, MinimumLength = 5, ErrorMessage = "Description Between 5 and 50")]
         public string Description { get; set; } = string.Empty;
         [Range(1,365)]
         public int DurationDays { get; set; }
@@ -15,3 +16,4 @@ namespace GymManagementBLL.ViewModels.PlanViewModels
         public decimal Price { get; set; }
     }
 }
+
