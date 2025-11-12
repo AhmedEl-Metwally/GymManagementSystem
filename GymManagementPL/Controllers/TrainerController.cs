@@ -73,7 +73,10 @@ namespace GymManagementPL.Controllers
         public ActionResult TrainerEdit([FromRoute]int id,TrainerToUpdateViewModel trainerToUpdate)
         {
             if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("DataInvalid", "Check Data And Missing Fields");
                 return View(nameof(trainerToUpdate));
+            }
 
             bool result = _trainerService.UpdateTrainerDetails(trainerToUpdate,id);
             if (result)
