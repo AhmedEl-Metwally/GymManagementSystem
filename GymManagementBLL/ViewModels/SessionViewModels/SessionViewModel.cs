@@ -14,6 +14,7 @@
 
         public string DateDisplay => $"{StartDate:MMM dd,yyyy}";
         public string TimeRangeDisplay => $"{StartDate:hh:mm tt}-{EndDate:hh:mm tt}";
+        public TimeSpan Duration => EndDate - StartDate;
         public string Status
         {
             get
