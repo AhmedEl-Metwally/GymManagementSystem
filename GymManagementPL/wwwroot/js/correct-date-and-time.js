@@ -1,0 +1,33 @@
+﻿document.addEventListener("DOMContentLoaded", () => {
+    const startInput = document.querySelector('input[name="StartDate"]') as HTMLInputElement | null;
+    const endInput = document.querySelector('input[name="EndDate"]') as HTMLInputElement | null;
+
+    if (!startInput || !endInput) return;
+
+    const now = new Date();
+    const localNow = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+   .toISOString()
+   .slice(0, 16);
+
+    startInput.min = localNow;
+    endInput.min = localNow;
+
+    if (!startInput.value || startInput.value.startsWith("0001")) {
+        startInput.value = localNow;
+    }
+
+    if (!endInput.value || endInput.value.startsWith("0001")) {
+        const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+        const localOneHourLater = new Date(oneHourLater.getTime() - now.getTimezoneOffset() * 60000)
+   .toISOString()
+   .slice(0, 16);
+        endInput.value = localOneHourLater;
+    }
+
+    startInput.addEventListener("change", () => {
+       endInput.min = startInput.value;
+       if (endInput.value && endInput.value < startInput.value) {
+           endInput.value = "";
+       }
+   });
+});

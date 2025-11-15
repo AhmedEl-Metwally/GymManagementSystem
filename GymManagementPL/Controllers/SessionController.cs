@@ -1,5 +1,7 @@
 ﻿using GymManagementBLL.Services.Interface;
+using GymManagementBLL.ViewModels.SessionViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GymManagementPL.Controllers
 {
@@ -27,5 +29,48 @@ namespace GymManagementPL.Controllers
             }
             return View(session);
         }
+
+        public ActionResult Create()
+        {
+            LoadDropDowns();
+            return View();
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public ActionResult Create(CreateSessionViewModel CreateSession)
+        {
+            if (!ModelState.IsValid)
+            {
+                LoadDropDowns();
+                return View(nameof(Create), CreateSession);
+            }
+
+            bool result = _sessionService.CreateSession(CreateSession);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Session Created Successfully";
+                return RedirectToRoute(nameof(Index));
+            }
+            else 
+            {
+                LoadDropDowns();
+                TempData["ErrorMessage"] = "Session Failed To Create";
+                return View(CreateSession);
+            }
+        }
+
+
+        // Helper Methods
+
+        private void LoadDropDowns()
+        {
+            var trainers = _sessionService.GetTrainerForDropDown();
+            ViewBag.trainers = new SelectList(trainers, "Id", "Name");
+
+            var categories = _sessionService.GetCategoryForDropDown();
+            ViewBag.categories = new SelectList(categories, "Id", "Name");
+        }
+
     }
 }

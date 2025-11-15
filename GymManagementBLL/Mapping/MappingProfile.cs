@@ -4,7 +4,6 @@ using GymManagementBLL.ViewModels.PlanViewModels;
 using GymManagementBLL.ViewModels.SessionViewModels;
 using GymManagementBLL.ViewModels.TrainerViewModels;
 using GymManagementDAL.Entities;
-using GymManagementSystemBLL.ViewModels.SessionViewModels;
 
 namespace GymManagementBLL.Mapping
 {
@@ -19,7 +18,6 @@ namespace GymManagementBLL.Mapping
         }
 
 
-        // Private Method
         private void MapSession()
         {
             CreateMap<Session, SessionViewModel>()
@@ -27,8 +25,12 @@ namespace GymManagementBLL.Mapping
                 .ForMember(dest => dest.TrainerName, option => option.MapFrom(src => src.Trainer.Name))
                 .ForMember(dest =>dest.AvailableSlots, option => option.Ignore());
 
-            CreateMap<Session,SessionViewModel>();
-            CreateMap<Session,UpdateSessionViewModel>().ReverseMap();   
+            CreateMap<Category, CategorySelectViewModel>()
+                .ForMember(dest =>dest.Name,option =>option.MapFrom(src =>src.CategoryName));
+
+            CreateMap<Session, CreateSessionViewModel>();
+            CreateMap<Session,UpdateSessionViewModel>().ReverseMap();
+            CreateMap<Trainer, TrainerSelectViewModel>();
         }
 
         private void MapMember()

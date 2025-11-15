@@ -1,14 +1,14 @@
-﻿
-
-document.getElementById('photoInput').addEventListener('change', function (e) {
-    var file = e.target.files[0];
+﻿document.getElementById('photoInput')?.addEventListener('change', function(e) {
+    const file = (e.target as HTMLInputElement).files?.[0];
     if (file) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            var preview = document.getElementById('photoPreview');
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-        }
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+            const preview = document.getElementById('photoPreview') as HTMLImageElement | null;
+            if (preview) {
+                preview.src = ev.target?.result as string;
+                preview.style.display = 'block';
+            }
+        };
         reader.readAsDataURL(file);
     }
 });

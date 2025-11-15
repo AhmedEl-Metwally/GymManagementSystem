@@ -3,7 +3,6 @@ using GymManagementBLL.Services.Interface;
 using GymManagementBLL.ViewModels.SessionViewModels;
 using GymManagementDAL.Entities;
 using GymManagementDAL.Repositories.UnitOfWorks;
-using GymManagementSystemBLL.ViewModels.SessionViewModels;
 
 namespace GymManagementBLL.Services.Implementation
 {
@@ -38,12 +37,12 @@ namespace GymManagementBLL.Services.Implementation
             {
                 if (!IsTrainerExists(CreateSession.TrainerId))
                     return false;
-                if (!IsCategoryExists(CreateSession.CategoryId))
+                if (!IsCategoryExists(CreateSession.TrainerId))
                     return false;
                 if (!IsDateTimeValid(CreateSession.StartDate, CreateSession.EndDate))
                     return false;
-                if (CreateSession.Capacity > 25 || CreateSession.Capacity < 0)
-                    return false;
+                //if (CreateSession.Capacity > 25 || CreateSession.Capacity < 0)
+                //    return false;
 
                 var SessionEntity = _mapper.Map<Session>(CreateSession);
                 _unitOfWork.GetRepository<Session>().Add(SessionEntity);
@@ -103,12 +102,24 @@ namespace GymManagementBLL.Services.Implementation
             }
         }
 
+        public IEnumerable<TrainerSelectViewModel> GetTrainerForDropDown()
+        {
+            var trainers = _unitOfWork.GetRepository<Trainer>().GetAll();
+            return _mapper.Map<IEnumerable<TrainerSelectViewModel>>(trainers);
+        }
+
+        public IEnumerable<CategorySelectViewModel> GetCategoryForDropDown()
+        {
+            var categories = _unitOfWork.GetRepository<Category>().GetAll();
+            return _mapper.Map<IEnumerable<CategorySelectViewModel>>(categories);
+        }
+
 
         // Helper Methods
 
         private bool IsTrainerExists(int TrainerId) => _unitOfWork.GetRepository<Trainer>().GetById(TrainerId) is not null;
         private bool IsCategoryExists(int CategoryId) => _unitOfWork.GetRepository<Category>().GetById(CategoryId) is not null;
-        private bool IsDateTimeValid(DateTime StartDate, DateTime EndDate) => StartDate < EndDate;
+       private bool IsDateTimeValid(DateTime StartDate, DateTime EndDate) => StartDate < EndDate && DateTime.Now < StartDate;
 
         private bool IsSessionAvailableForupdating(Session session)
         {
@@ -141,6 +152,5 @@ namespace GymManagementBLL.Services.Implementation
 
             return true;
         }
-
     }
 }
