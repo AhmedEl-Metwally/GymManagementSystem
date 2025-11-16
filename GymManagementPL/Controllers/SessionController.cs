@@ -1,5 +1,6 @@
 ﻿using GymManagementBLL.Services.Interface;
 using GymManagementBLL.ViewModels.SessionViewModels;
+using GymManagementDAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -104,7 +105,37 @@ namespace GymManagementPL.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public ActionResult Delete(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Id Cannot be negative or zero";
+                return RedirectToAction(nameof(Index));
+            }
 
+            var result = _sessionService.GetSessionById(id);
+
+            if (result is null)
+            {
+                TempData["ErrorMessage"] = "Session Not Found";
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.SessionId = id;
+            return View();
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            bool result = _sessionService.RemoveSession(id);
+            if (result)
+                TempData["SuccessMessage"] = "Session Deleted Successfully";
+            else
+                TempData["ErrorMessage"] = "Session Failed To Delete";
+
+            return RedirectToAction(nameof(Index));
+        }
 
 
 
