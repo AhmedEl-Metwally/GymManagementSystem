@@ -32,7 +32,8 @@ namespace GymManagementPL.Controllers
 
         public ActionResult Create()
         {
-            LoadDropDowns();
+            LoadDropDownsForCategory();
+            LoadDropDownsForTrainer();
             return View();
         }
 
@@ -42,7 +43,8 @@ namespace GymManagementPL.Controllers
         {
             if (!ModelState.IsValid)
             {
-                LoadDropDowns();
+                LoadDropDownsForCategory();
+                LoadDropDownsForTrainer();
                 return View(nameof(Create), CreateSession);
             }
 
@@ -54,20 +56,68 @@ namespace GymManagementPL.Controllers
             }
             else 
             {
-                LoadDropDowns();
+                LoadDropDownsForCategory();
+                LoadDropDownsForTrainer();
                 TempData["ErrorMessage"] = "Session Failed To Create";
                 return View(CreateSession);
             }
         }
 
+        public ActionResult Edit(int id)
+        {
+            if (id <= 0) 
+            {
+                TempData["ErrorMessage"] = "Id Cannot be negative or zero";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var session = _sessionService.GetSessionToUpdate(id);
+            if (session is null) 
+            {
+                TempData["ErrorMessage"] = "Session Not Found";
+                return RedirectToAction(nameof(Index));
+            }
+            LoadDropDownsForTrainer();
+            return View(session);
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public ActionResult Edit([FromRoute]UpdateSessionViewModel UpdateSession, int SessionId)
+        {
+            if (!ModelState.IsValid)
+            {
+                LoadDropDownsForTrainer();
+                return View(UpdateSession);
+            }
+
+            var result = _sessionService.UpdateSession(UpdateSession,SessionId);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Session Updated Successfully";
+            }
+            else 
+            {
+                TempData["ErrorMessage"] = "Session Failed To Update";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+
 
         // Helper Methods
 
-        private void LoadDropDowns()
+        private void LoadDropDownsForTrainer()
         {
             var trainers = _sessionService.GetTrainerForDropDown();
             ViewBag.trainers = new SelectList(trainers, "Id", "Name");
+        }
 
+        private void LoadDropDownsForCategory()
+        {
             var categories = _sessionService.GetCategoryForDropDown();
             ViewBag.categories = new SelectList(categories, "Id", "Name");
         }

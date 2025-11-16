@@ -37,12 +37,12 @@ namespace GymManagementBLL.Services.Implementation
             {
                 if (!IsTrainerExists(CreateSession.TrainerId))
                     return false;
-                if (!IsCategoryExists(CreateSession.TrainerId))
+                if (!IsCategoryExists(CreateSession.CategoryId))
                     return false;
                 if (!IsDateTimeValid(CreateSession.StartDate, CreateSession.EndDate))
                     return false;
-                //if (CreateSession.Capacity > 25 || CreateSession.Capacity < 0)
-                //    return false;
+                if (CreateSession.Capacity > 25 || CreateSession.Capacity < 0)
+                    return false;
 
                 var SessionEntity = _mapper.Map<Session>(CreateSession);
                 _unitOfWork.GetRepository<Session>().Add(SessionEntity);
@@ -58,7 +58,7 @@ namespace GymManagementBLL.Services.Implementation
         public UpdateSessionViewModel? GetSessionToUpdate(int SessionId)
         {
             var Session = _unitOfWork.SessionRepository.GetById(SessionId);
-            if(!IsSessionAvailableForupdating(Session!))
+            if(!IsSessionAvailableForUpdate(Session!))
                 return null;
             return _mapper.Map<UpdateSessionViewModel>(Session);
         }
@@ -68,7 +68,7 @@ namespace GymManagementBLL.Services.Implementation
             try
             {
                 var Session = _unitOfWork.SessionRepository.GetById(SessionId);
-                if(!IsSessionAvailableForupdating(Session!))
+                if(!IsSessionAvailableForUpdate(Session!))
                     return false;
                 if(!IsTrainerExists(UpdateSession.TrainerId))
                     return false;
@@ -91,7 +91,7 @@ namespace GymManagementBLL.Services.Implementation
             try
             {
                 var Session = _unitOfWork.SessionRepository.GetById(SessionId);
-                if(!IsSessionAvailableForRemoveing(Session!))
+                if(!IsSessionAvailableForRemove(Session!))
                     return false;
                 _unitOfWork.SessionRepository.Delete(Session!);
                 return _unitOfWork.SaveChange() >0;    
@@ -119,38 +119,42 @@ namespace GymManagementBLL.Services.Implementation
 
         private bool IsTrainerExists(int TrainerId) => _unitOfWork.GetRepository<Trainer>().GetById(TrainerId) is not null;
         private bool IsCategoryExists(int CategoryId) => _unitOfWork.GetRepository<Category>().GetById(CategoryId) is not null;
-       private bool IsDateTimeValid(DateTime StartDate, DateTime EndDate) => StartDate < EndDate && DateTime.Now < StartDate;
+       private bool IsDateTimeValid(DateTime StartDate, DateTime EndDate) => EndDate > StartDate && DateTime.Now < StartDate;
+        // private bool IsDateTimeValid(DateTime StartDate, DateTime EndDate) => StartDate < EndDate && DateTime.Now < StartDate;
 
-        private bool IsSessionAvailableForupdating(Session session)
+        private bool IsSessionAvailableForUpdate(Session session)
         {
-            if(session is null)
-                return false;
-            if(session.EndDate < DateTime.Now)
-                return false;
-            if(session.StartDate <= DateTime.Now)
-                return false;
+            //if(session is null)
+            //    return false;
+            //if(session.StartDate <= DateTime.Now)
+            //    return false;
+            //if(session.EndDate < DateTime.Now)
+            //    return false;
 
-            var HasActiveBooking = _unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id) >0;
-            if(HasActiveBooking)
-                return false;
+            //var HasActiveBooking = _unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id) >0;
+            //if(HasActiveBooking)
+            //    return false;
 
-            return true;
+            //return true;
+
+            return session.StartDate > DateTime.Now && _unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id) == 0;
         }
 
-        private bool IsSessionAvailableForRemoveing(Session session)
+        private bool IsSessionAvailableForRemove(Session session)
         {
-            if (session is null)
-                return false;
-            if (session.StartDate <= DateTime.Now && session.EndDate > DateTime.Now )
-                return false;
-            if (session.StartDate > DateTime.Now)
-                return false;
+            //if (session is null)
+            //    return false;
+            //if (session.StartDate <= DateTime.Now && session.EndDate > DateTime.Now )
+            //    return false;
+            //if (session.StartDate > DateTime.Now)
+            //    return false;
 
-            var HasActiveBooking = _unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id) > 0;
-            if (HasActiveBooking)
-                return false;
+            //var HasActiveBooking = _unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id) > 0;
+            //if (HasActiveBooking)
+            //    return false;
 
-            return true;
+            //return true;
+            return session.StartDate < DateTime.Now && _unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id) == 0;
         }
     }
 }
