@@ -6,11 +6,13 @@ using GymManagementDAL.Repositories.Interfaces;
 
 namespace GymManagementDAL.Repositories.UnitOfWorks
 {
-    public class UnitOfWork(GymDbContext _context, ISessionRepository sessionRepository) : IUnitOfWork
+    public class UnitOfWork(GymDbContext _context, ISessionRepository _sessionRepository, IMemberPlanRepository _memberPlanRepository) : IUnitOfWork
     {
         private readonly Dictionary<Type, object> _repositories = [];
 
-        public ISessionRepository SessionRepository { get; } = sessionRepository;
+        public ISessionRepository SessionRepository { get; } = _sessionRepository;
+
+        public IMemberPlanRepository MemberPlanRepository => _memberPlanRepository;
 
         public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity, new()
         {
