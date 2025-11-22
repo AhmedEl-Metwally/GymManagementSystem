@@ -17,8 +17,8 @@ namespace GymManagementDAL.Repositories.Implementation
         public IEnumerable<MemberPlan> GetAllMemberPlanWithMembersAndPlans(Func<MemberPlan, bool>? filter = null)
         {
             var memberPlan = _context.MemberPlans.Include(M => M.Member)
-                                                                    .Include(M => M.Plan)
-                                                                    .Where(filter ?? (_ => true));
+                                                               .Include(M => M.Plan)
+                                                               .Where(filter ?? (_ => true)).ToList();
             return memberPlan;
         }
     }

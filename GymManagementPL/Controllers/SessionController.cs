@@ -53,7 +53,7 @@ namespace GymManagementPL.Controllers
             if (result)
             {
                 TempData["SuccessMessage"] = "Session Created Successfully";
-                return RedirectToRoute(nameof(Index));
+                return RedirectToAction(nameof(Index));
             }
             else 
             {
@@ -84,7 +84,7 @@ namespace GymManagementPL.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public ActionResult Edit([FromRoute]UpdateSessionViewModel UpdateSession, int SessionId)
+        public ActionResult Edit([FromRoute] int SessionId, UpdateSessionViewModel UpdateSession)
         {
             if (!ModelState.IsValid)
             {
