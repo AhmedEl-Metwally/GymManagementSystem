@@ -43,6 +43,21 @@ namespace GymManagementPL.Controllers
         }
 
 
+        public IActionResult CancelMemberPlan(int id)
+        {
+            var result = _memberPlanService.DeleteMemberPlan(id);
+            if (result)
+            {         
+                TempData["SuccessMessage"] = "Membership cancelled successfully";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Membership can not be cancelled";
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
         //Helper Methods
 
         private void LoadDropDownList() 

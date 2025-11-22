@@ -3,7 +3,6 @@ using GymManagementBLL.Services.Interface;
 using GymManagementBLL.ViewModels.MemberPlanViewModels;
 using GymManagementDAL.Entities;
 using GymManagementDAL.Repositories.UnitOfWorks;
-using System.Globalization;
 
 namespace GymManagementBLL.Services.Implementation
 {
@@ -43,6 +42,18 @@ namespace GymManagementBLL.Services.Implementation
             var PlanSelectList = _mapper.Map<IEnumerable<PlanForSelectListViewModel>>(plans);
             return PlanSelectList;
         }
+
+        public bool DeleteMemberPlan(int memberPlanId)
+        {
+            var memberPlanRepository = _unitOfWork.MemberPlanRepository;
+            var memberPlanToDelete = memberPlanRepository.GetFirstOrDefault(M => M.MemberId == memberPlanId && M.Status == "Active");
+
+            if(memberPlanToDelete is null)
+                return false;
+            memberPlanRepository.Delete(memberPlanToDelete);
+            return _unitOfWork.SaveChange() > 0;
+        }
+
 
         //Helper Methods
 

@@ -21,5 +21,13 @@ namespace GymManagementDAL.Repositories.Implementation
                                                                .Where(filter ?? (_ => true)).ToList();
             return memberPlan;
         }
+
+        public MemberPlan? GetFirstOrDefault(Func<MemberPlan, bool>? filter = null)
+        {
+            var memberPlan = _context.MemberPlans.Include(M => M.Member)
+                                                          .Include(M => M.Plan)
+                                                          .FirstOrDefault(filter ?? (_ => true));
+            return memberPlan;
+        }
     }
 }
