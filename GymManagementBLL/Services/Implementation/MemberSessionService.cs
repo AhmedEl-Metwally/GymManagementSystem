@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GymManagementBLL.Services.Interface;
+using GymManagementBLL.ViewModels.MemberSessionViewModels;
 using GymManagementBLL.ViewModels.SessionViewModels;
 using GymManagementDAL.Repositories.UnitOfWorks;
 
@@ -18,5 +19,14 @@ namespace GymManagementBLL.Services.Implementation
 
             return sessionView;
         }
+
+        public IEnumerable<MemberForSessionViewModel> GetAllMemberForUpcomingSession(int sessionId)
+        {
+            var memberSessionRepository = _unitOfWork.MemberSessionRepository;
+            var memberSession= memberSessionRepository.GetMemberSessionById(sessionId);
+            var memberForSessionViewMode = _mapper.Map<IEnumerable<MemberForSessionViewModel>>(memberSession);
+            return memberForSessionViewMode;
+        }
+
     }
 }
