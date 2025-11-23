@@ -20,7 +20,7 @@ namespace GymManagementBLL.Services.Implementation
             return sessionView;
         }
 
-        public IEnumerable<MemberForSessionViewModel> GetAllMemberForUpcomingSession(int sessionId)
+        public IEnumerable<MemberForSessionViewModel> GetAllMemberSession(int sessionId)
         {
             var memberSessionRepository = _unitOfWork.MemberSessionRepository;
             var memberSession= memberSessionRepository.GetMemberSessionById(sessionId);

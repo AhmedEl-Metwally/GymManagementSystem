@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<MemberForSessionViewModel>
 
 @{
-    ViewData["Title"] = "GetMemberForUpcomingSession";
+    ViewData["Title"] = "GetMemberForOngoingSession";
 }
+
 
 @if (TempData["SuccessMessage"] is not null)
 {
@@ -20,20 +21,17 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 }
+
 <header class="bg-primary text-white rounded-3 p-4 shadow-sm mt-5 mb-4">
     <div class="d-flex justify-content-between align-items-center">
         <div>
             <h2 class="mb-1 fw-semibold">Session Members</h2>
-            <p class="mb-0 text-light opacity-75">Members That Already Member Session</p>
-        </div>
-        <div class="text-end">
-            <a href="membersession/Create/sessionId" class="btn btn-light">
-                <i class="fas fa-plus me-1"></i> New Member Session
-            </a>
+            <p class="mb-0 text-light opacity-75">Members Attendance</p>
         </div>
     </div>
 </header>
 <div class="card shadow-sm">
+
     <div class="card-body">
         @if (Model is not null && Model.Any())
         {
@@ -41,27 +39,35 @@
                 <thead>
                     <tr>
                         <th>@nameof(MemberForSessionViewModel.MemberName)</th>
-                        <th>@nameof(MemberForSessionViewModel.BookingDate)</th>
-                        <th>Actions</th>
+                        <th>@nameof(MemberForSessionViewModel.IsAttended)</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var member in Model)
                     {
-                    <tr>
-                        <td>@member.MemberName</td>
-                        <td>@member.BookingDate</td>
-                        <td>
-                            <div class="d-flex justify-content-center gap-1">
-                                <form method="post" href="memberSession/cancel" class="m-0">
-                                    <button type="submit" class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Are you sure you want to cancel this booking?');">
-                                        <i class="fas fa-times"></i> Cancel
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>@member.MemberName</td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-1">
+                                    @if(member.IsAttended)
+                                    {
+                                    <span class="text-success fw-bold">
+                                        <i class="bi bi-check-circle me-1"></i> @member.IsAttended
+                                    </span>
+                                    }
+                                    else
+                                    {
+                                    <form method="post" class="d-inline">
+                                        <input type="hidden" value="@member.MemberId" name="MemberId"/>
+                                        <input type="hidden" value="@member.SessionId" name="SessionId"/>
+                                        <button type="submit" class="btn btn-outline-success btn-sm">
+                                            <i class="bi bi-check-circle me-1"></i> Mark as Attended
+                                        </button>
+                                    </form>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -70,8 +76,7 @@
         {
             <div class="text-center py-5">
                 <i class="bi bi-person-workspace display-1 text-muted"></i>
-                <h4 class="mt-3 text-muted">No Member Session Available</h4>
-                <p class="text-muted">Add your first Member Session to get started</p>
+                <h4 class="mt-3 text-muted">No Members Available</h4>
             </div>
         }
     </div>

@@ -6,6 +6,6 @@ namespace GymManagementBLL.Services.Interface
     public interface IMemberSessionService
     {
         IEnumerable<SessionViewModel> GetAllMemberSessionWithTrainerAndCategory();
-        IEnumerable<MemberForSessionViewModel> GetAllMemberForUpcomingSession(int sessionId);
+        IEnumerable<MemberForSessionViewModel> GetAllMemberSession(int sessionId);
     }
 }
