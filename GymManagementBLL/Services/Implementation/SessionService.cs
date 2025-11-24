@@ -17,7 +17,7 @@ namespace GymManagementBLL.Services.Implementation
 
             var mappedSessions = _mapper.Map<IEnumerable<Session>, IEnumerable<SessionViewModel>>(sessions);
             foreach (var session in mappedSessions)
-                session.AvailableSlots = session.Capacity - sessionRepository.GetCountOfBookedSlots(session.Id);
+                session.AvailableSlots = session.Capacity - sessionRepository.GetCountOfMemberSessionSlots(session.Id);
             return mappedSessions;
         }
 
@@ -28,7 +28,7 @@ namespace GymManagementBLL.Services.Implementation
                 return null;
 
             var mappedSession = _mapper.Map<Session, SessionViewModel>(session);
-            mappedSession.AvailableSlots = mappedSession.Capacity - _unitOfWork.SessionRepository.GetCountOfBookedSlots(mappedSession.Id);
+            mappedSession.AvailableSlots = mappedSession.Capacity - _unitOfWork.SessionRepository.GetCountOfMemberSessionSlots(mappedSession.Id);
             return mappedSession;
         }
 
@@ -122,9 +122,9 @@ namespace GymManagementBLL.Services.Implementation
         private bool IsCategoryExists(int CategoryId) => _unitOfWork.GetRepository<Category>().GetById(CategoryId) is not null;
         private bool IsDateTimeValid(DateTime StartDate, DateTime EndDate) => EndDate > StartDate;
         private bool IsSessionAvailableForUpdate(Session session)
-           => session.StartDate > DateTime.Now && _unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id) == 0;
+           => session.StartDate > DateTime.Now && _unitOfWork.SessionRepository.GetCountOfMemberSessionSlots(session.Id) == 0;
         private bool IsSessionAvailableForRemove(Session session)
-           => session.StartDate < DateTime.Now && _unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id) == 0;
+           => session.StartDate < DateTime.Now && _unitOfWork.SessionRepository.GetCountOfMemberSessionSlots(session.Id) == 0;
 
     }
 }

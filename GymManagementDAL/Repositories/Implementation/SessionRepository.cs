@@ -17,7 +17,7 @@ namespace GymManagementDAL.Repositories.Implementation
         public IEnumerable<Session> GetAllSessionsWithTrainerAndCategory() =>
             _context.Sessions.Include(S => S.Trainer).Include(S => S.Category).ToList();
 
-        public int GetCountOfBookedSlots(int sessionId) =>
+        public int GetCountOfMemberSessionSlots(int sessionId) =>
             _context.MemberSessions.Count(MS => MS.SessionId == sessionId);
 
         public Session? GetSessionWithTrainerAndCategory(int SessionId) =>

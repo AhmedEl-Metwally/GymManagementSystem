@@ -127,6 +127,8 @@ namespace GymManagementBLL.Mapping
             CreateMap<MemberSession, MemberForSessionViewModel>()
                 .ForMember(dest => dest.MemberName, option => option.MapFrom(src => src.Member.Name))
                 .ForMember(dest => dest.BookingDate,option => option.MapFrom(src => src.CreatedAt.ToString()));
+
+            CreateMap<CreateMemberSessionViewModel, MemberSession>();   
         }
 
     }
