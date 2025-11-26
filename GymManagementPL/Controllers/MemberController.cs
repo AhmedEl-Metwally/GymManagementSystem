@@ -55,7 +55,7 @@ namespace GymManagementPL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateMember(CreateMemberViewModel createMember) 
+        public ActionResult Create(CreateMemberViewModel createMember) 
         {
             if (!ModelState.IsValid)
             {

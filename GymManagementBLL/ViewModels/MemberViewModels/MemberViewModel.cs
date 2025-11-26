@@ -1,8 +1,4 @@
-﻿
-using GymManagementBLL.SettingsOfAttachment;
-using Microsoft.AspNetCore.Http;
-
-namespace GymManagementBLL.ViewModels.MemberViewModels
+﻿namespace GymManagementBLL.ViewModels.MemberViewModels
 {
     public class MemberViewModel
     {
@@ -19,9 +15,5 @@ namespace GymManagementBLL.ViewModels.MemberViewModels
         public string? MembershipStartDate { get; set; }
         public string? MembershipEndDate { get; set; }
         public string? Address{ get; set; }
-
-        [MaxFileSizeAttributes(FileSettings.MaxFileSizeInBytes)]
-        [AllowedExtensionsAttributes(FileSettings.AllowedExtensions)]
-        public IFormFile? NewPhotoFile { get; set; }
     }
 }

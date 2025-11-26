@@ -1,4 +1,6 @@
-﻿using GymManagementDAL.Entities.Enums;
+﻿using GymManagementBLL.SettingsOfAttachment;
+using GymManagementDAL.Entities.Enums;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace GymManagementBLL.ViewModels.MemberViewModels
@@ -31,5 +33,10 @@ namespace GymManagementBLL.ViewModels.MemberViewModels
         [Required]
         public HealthRecordViewModel HealthRecordViewModel { get; set; } = default!;
 
+        [MaxFileSizeAttributes(FileSettings.MaxFileSizeInBytes)]
+        [AllowedExtensionsAttributes(FileSettings.AllowedExtensions)]
+        [Display(Name = "Profile Photo")]
+        [Required]
+        public IFormFile PhotoFile { get; set; } = null!;
     }
 }
