@@ -10,6 +10,10 @@
     <None Remove="ViewModels\MemberViewModels\nnzkrs2x.ol5~" />
   </ItemGroup>
 
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />
   </ItemGroup>

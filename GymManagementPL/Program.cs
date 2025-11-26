@@ -1,4 +1,5 @@
 using GymManagementBLL.Mapping;
+using GymManagementBLL.Services.AttachmentServices;
 using GymManagementBLL.Services.Implementation;
 using GymManagementBLL.Services.Interface;
 using GymManagementDAL.Data.Context;
@@ -26,6 +27,7 @@ builder.Services.AddScoped<ITrainerService,TrainerService>();
 builder.Services.AddScoped<ISessionService,SessionService>();
 builder.Services.AddScoped<IMemberPlanService,MemberPlanService>();
 builder.Services.AddScoped<IMemberSessionService,MemberSessionService>();
+builder.Services.AddScoped<IAttachmentService,AttachmentService>();
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<IMemberPlanRepository,MemberPlanRepository>();
 builder.Services.AddScoped<IMemberSessionRepository,MemberSessionRepository>();

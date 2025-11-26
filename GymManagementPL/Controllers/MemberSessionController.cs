@@ -1,6 +1,5 @@
 ﻿using GymManagementBLL.Services.Interface;
 using GymManagementBLL.ViewModels.MemberSessionViewModels;
-using GymManagementDAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
