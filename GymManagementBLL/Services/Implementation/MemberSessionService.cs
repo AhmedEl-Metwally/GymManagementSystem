@@ -64,5 +64,38 @@ namespace GymManagementBLL.Services.Implementation
             var memberSessionSelectList = _mapper.Map<IEnumerable<MemberForSelectListViewModel>>(memberAvailableToMemberSession);
             return memberSessionSelectList;
         }
+
+        public bool MemberAttended(MemberAttendOrCancelViewModel memberAttendOrCancel)
+        {
+            try
+            {
+                var memberSessionRepository = _unitOfWork.MemberSessionRepository;
+                var memberSession = memberSessionRepository.GetAll(MS => MS.MemberId == memberAttendOrCancel.MemberId && MS.SessionId == memberAttendOrCancel.SessionId).FirstOrDefault();
+                if (memberSession is null)
+                    return false;   
+                memberSession.IsAttended = true;
+                memberSession.UpdatedAt = DateTime.UtcNow;  
+                _unitOfWork.MemberSessionRepository.Update(memberSession);
+                return _unitOfWork.SaveChange() > 0;
+
+            }
+            catch 
+            {
+                return false;
+            }
+        }
+
+        public bool CancelMemberSession(MemberAttendOrCancelViewModel memberAttendOrCancel)
+        {
+            var session = _unitOfWork.SessionRepository.GetById(memberAttendOrCancel.SessionId);
+            if (session is null || session.StartDate <= DateTime.UtcNow)
+                return false;
+            var memberSessionRepository = _unitOfWork.MemberSessionRepository;
+            var memberSession = memberSessionRepository.GetAll(MS => MS.MemberId == memberAttendOrCancel.MemberId && MS.SessionId == memberAttendOrCancel.SessionId).FirstOrDefault();
+            if (memberSession is null) 
+                return false;
+            _unitOfWork.MemberSessionRepository.Delete(memberSession);   
+            return _unitOfWork.SaveChange() > 0;
+        }
     }
 }

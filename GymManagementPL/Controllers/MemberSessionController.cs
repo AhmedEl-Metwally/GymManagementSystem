@@ -16,6 +16,7 @@ namespace GymManagementPL.Controllers
         public IActionResult GetMemberForUpcomingSession(int sessionId)
         {
             var members = _memberSessionService.GetAllMemberSession(sessionId);
+            ViewBag.SessionId = sessionId;
             return View(members);
         }
 
@@ -30,6 +31,7 @@ namespace GymManagementPL.Controllers
             var members = _memberSessionService.GetMembersForDropdown(id);
             var membersSelectList = new SelectList(members,"Id","Name");
             ViewBag.Members = membersSelectList;
+            ViewBag.SessionId = id;
             return View();
         }
 
@@ -43,7 +45,30 @@ namespace GymManagementPL.Controllers
             else
                 TempData["ErrorMessage"] = "Failed to Create Member Session.";
 
-            return RedirectToAction(nameof(GetMemberForOngoingSession), new { sessionId = createMemberSessionViewModel.SessionId });
+            return RedirectToAction(nameof(GetMemberForUpcomingSession), new { sessionId = createMemberSessionViewModel.SessionId });
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult MemberAttended(MemberAttendOrCancelViewModel memberAttendOrCancel)
+        {
+            var result = _memberSessionService.MemberAttended(memberAttendOrCancel);
+            return RedirectToAction(nameof(GetMemberForOngoingSession), new { sessionId = memberAttendOrCancel.SessionId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult MemberCancel(MemberAttendOrCancelViewModel memberAttendOrCancel)
+        {
+            var result = _memberSessionService.CancelMemberSession(memberAttendOrCancel);
+            if (result)
+                TempData["SuccessMessage"] = "Member cancelled successfully!";
+            else
+                TempData["ErrorMessage"] = "Failed to mark Member as cancelled.";
+            return RedirectToAction(nameof(GetMemberForUpcomingSession), new { sessionId = memberAttendOrCancel.SessionId });
+           
+        }
+
+
     }
 }

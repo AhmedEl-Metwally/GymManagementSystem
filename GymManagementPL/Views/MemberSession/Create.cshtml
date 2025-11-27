@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <form asp-action="Create" method="post">
                         <div class="mb-3">
-                            <input type="hidden" asp-for="SessionId"  readonly />
+                            <input type="hidden" asp-for="SessionId" value="@ViewBag.SessionId" readonly />
                             <label asp-for="MemberId" class="form-label">Member</label>
                             <select asp-for="MemberId" asp-items="ViewBag.Members" name="memberId" class="form-select">
                                 <option value="">-- Select Member --</option>
@@ -28,7 +28,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save"></i> Create Member Session
                             </button>
-                            <a asp-action="GetMemberForUpcomingSession" asp-method="post" " class="btn btn-secondary">
+                            <a asp-action="GetMemberForUpcomingSession" asp-method="post"  class="btn btn-secondary">
                                 <i class="fas fa-arrow-left"></i> Back to List
                             </a>
                         </div>

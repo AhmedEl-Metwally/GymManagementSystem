@@ -27,7 +27,7 @@
             <p class="mb-0 text-light opacity-75">Members That Already Member Session</p>
         </div>
         <div class="text-end">
-            <a asp-action="Create"  class="btn btn-light">
+            <a asp-action="Create" asp-route-id="@ViewBag.SessionId" class="btn btn-light">
                 <i class="fas fa-plus me-1"></i> New Member Session
             </a>
         </div>
@@ -53,9 +53,11 @@
                         <td>@member.BookingDate</td>
                         <td>
                             <div class="d-flex justify-content-center gap-1">
-                                <form method="post" href="memberSession/cancel" class="m-0">
+                                    <form method="post" asp-action="MemberCancel" class="m-0">
+                                        <input type="hidden" value="@member.MemberId" name="MemberId" />
+                                        <input type="hidden" value="@member.SessionId" name="SessionId" />
                                     <button type="submit" class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Are you sure you want to cancel this booking?');">
+                                                onclick="return confirm('Are you sure you want to cancel this Member Session?');">
                                         <i class="fas fa-times"></i> Cancel
                                     </button>
                                 </form>

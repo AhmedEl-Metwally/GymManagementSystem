@@ -10,5 +10,7 @@ namespace GymManagementBLL.Services.Interface
         IEnumerable<MemberForSessionViewModel> GetAllMemberSession(int sessionId);
         bool CreateMemberSession(CreateMemberSessionViewModel createMemberSessionViewModel);
         IEnumerable<MemberForSelectListViewModel> GetMembersForDropdown(int sessionId);
+        bool MemberAttended(MemberAttendOrCancelViewModel memberAttendOrCancel );
+        bool CancelMemberSession(MemberAttendOrCancelViewModel memberAttendOrCancel);
     }
 }
