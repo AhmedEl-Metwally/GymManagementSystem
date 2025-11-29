@@ -4,9 +4,11 @@ using GymManagementBLL.Services.Implementation;
 using GymManagementBLL.Services.Interface;
 using GymManagementDAL.Data.Context;
 using GymManagementDAL.Data.DataSeed;
+using GymManagementDAL.Entities;
 using GymManagementDAL.Repositories.Implementation;
 using GymManagementDAL.Repositories.Interfaces;
 using GymManagementDAL.Repositories.UnitOfWorks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +40,12 @@ builder.Services.AddAutoMapper(Mapping => Mapping.AddProfile(new MappingProfile(
 var app = builder.Build();
 
 GymDbContextSeeding.SeedData(app.Services.CreateScope().ServiceProvider.GetRequiredService<GymDbContext>());
+
+// ===== SeedData Identity =====
+var Scope = app.Services.CreateScope();
+var RoleManager = Scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+var UserManager = Scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+IdentityDbContextSeeding.SeedData(RoleManager, UserManager);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
