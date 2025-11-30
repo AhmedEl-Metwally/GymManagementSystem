@@ -31,6 +31,7 @@ builder.Services.AddScoped<ISessionService,SessionService>();
 builder.Services.AddScoped<IMemberPlanService,MemberPlanService>();
 builder.Services.AddScoped<IMemberSessionService,MemberSessionService>();
 builder.Services.AddScoped<IAttachmentService,AttachmentService>();
+builder.Services.AddScoped<IAccountService,AccountService>();
 
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<IMemberPlanRepository,MemberPlanRepository>();
