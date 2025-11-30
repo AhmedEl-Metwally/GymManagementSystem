@@ -10,6 +10,7 @@ using GymManagementDAL.Repositories.Interfaces;
 using GymManagementDAL.Repositories.UnitOfWorks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,12 +31,26 @@ builder.Services.AddScoped<ISessionService,SessionService>();
 builder.Services.AddScoped<IMemberPlanService,MemberPlanService>();
 builder.Services.AddScoped<IMemberSessionService,MemberSessionService>();
 builder.Services.AddScoped<IAttachmentService,AttachmentService>();
+
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<IMemberPlanRepository,MemberPlanRepository>();
 builder.Services.AddScoped<IMemberSessionRepository,MemberSessionRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+
 builder.Services.AddAutoMapper(Mapping => Mapping.AddProfile(new MappingProfile()));
+
+// ===== Identity Configuration =====
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(Config =>
+{
+    Config.User.RequireUniqueEmail = true;
+}).AddEntityFrameworkStores<GymDbContext>();
+
+builder.Services.ConfigureApplicationCookie(options => 
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
 
 var app = builder.Build();
 
