@@ -1,11 +1,13 @@
 ﻿using GymManagementBLL.Services.Interface;
 using GymManagementBLL.ViewModels.TrainerViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymManagementPL.Controllers
 {
     public class TrainerController(ITrainerService _trainerService) : Controller
     {
+        [Authorize(Roles ="SuperAdmin")]
         public ActionResult Index()
         {
             var trainers =_trainerService.GetAllTrainers();

@@ -1,5 +1,6 @@
 ﻿using GymManagementBLL.Services.Interface;
 using GymManagementBLL.ViewModels.MemberPlanViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -7,6 +8,7 @@ namespace GymManagementPL.Controllers
 {
     public class MemberPlanController(IMemberPlanService _memberPlanService) : Controller
     {
+        [Authorize(Roles ="SuperAdmin")]
         public IActionResult Index()
         {
             var memberPlan = _memberPlanService.GetAllMemberPlans();

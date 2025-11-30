@@ -1,11 +1,12 @@
 ﻿using GymManagementBLL.Services.Interface;
 using GymManagementBLL.ViewModels.SessionViewModels;
-using GymManagementDAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GymManagementPL.Controllers
 {
+    [Authorize]
     public class SessionController(ISessionService _sessionService) : Controller
     {
         public ActionResult Index()
