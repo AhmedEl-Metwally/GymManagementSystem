@@ -8,7 +8,7 @@ namespace GymManagementPL.Controllers
 {
     public class MemberPlanController(IMemberPlanService _memberPlanService) : Controller
     {
-        [Authorize(Roles ="SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin,Admin")]
         public IActionResult Index()
         {
             var memberPlan = _memberPlanService.GetAllMemberPlans();

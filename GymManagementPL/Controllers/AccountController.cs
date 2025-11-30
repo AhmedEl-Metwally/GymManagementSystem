@@ -14,6 +14,7 @@ namespace GymManagementPL.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel loginViewModel) 
         {
             if(!ModelState.IsValid)
@@ -38,10 +39,16 @@ namespace GymManagementPL.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
             _signInManager.SignOutAsync().GetAwaiter().GetResult();
             return RedirectToAction(nameof(Login));
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

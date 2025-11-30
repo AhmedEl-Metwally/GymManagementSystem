@@ -8,7 +8,7 @@ namespace GymManagementPL.Controllers
 {
     public class MemberSessionController(IMemberSessionService _memberSessionService) : Controller
     {
-        [Authorize(Roles ="SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin,Admin")]
         public IActionResult Index()
         {
             var sessions = _memberSessionService.GetAllMemberSessionWithTrainerAndCategory();

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GymManagementPL.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public class PlanController(IPlanService _planService) : Controller
     {
         public ActionResult Index()
