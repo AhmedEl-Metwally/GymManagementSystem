@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GymManagementPL.Controllers
 {
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public class MemberSessionController(IMemberSessionService _memberSessionService) : Controller
     {
-        [Authorize(Roles = "SuperAdmin,Admin")]
         public IActionResult Index()
         {
             var sessions = _memberSessionService.GetAllMemberSessionWithTrainerAndCategory();

@@ -1,0 +1,31 @@
+﻿<div id="assistant-widget" class="aw-root"
+     data-ask-url="@Url.Action("Ask", "Assistant")"
+     data-history-url="@Url.Action("History", "Assistant")"
+     data-clear-url="@Url.Action("Clear", "Assistant")">
+
+    @Html.AntiForgeryToken()
+
+    <button id="aw-toggle" type="button" class="aw-toggle" aria-label="Open assistant">
+        <i class="bi bi-chat-dots-fill"></i>
+    </button>
+
+    <section id="aw-window" class="aw-window" hidden aria-label="Assistant chat">
+        <header class="aw-header">
+            <div class="aw-title">
+                <strong>Power Fitness Assistant</strong>
+                <small>مساعد الإدارة</small>
+            </div>
+            <div class="aw-header-actions">
+                <button id="aw-clear" type="button" title="محادثة جديدة"><i class="bi bi-arrow-counterclockwise"></i></button>
+                <button id="aw-close" type="button" title="إغلاق"><i class="bi bi-x-lg"></i></button>
+            </div>
+        </header>
+
+        <div id="aw-messages" class="aw-messages" aria-live="polite"></div>
+
+        <form id="aw-form" class="aw-form" autocomplete="off">
+            <textarea id="aw-input" rows="1" maxlength="500" dir="auto" placeholder="اكتب سؤالك..."></textarea>
+            <button id="aw-send" type="submit" aria-label="Send"><i class="bi bi-send-fill"></i></button>
+        </form>
+    </section>
+</div>

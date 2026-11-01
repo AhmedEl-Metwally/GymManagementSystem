@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GymManagementPL.Controllers
 {
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public class MemberPlanController(IMemberPlanService _memberPlanService) : Controller
     {
-        [Authorize(Roles = "SuperAdmin,Admin")]
         public IActionResult Index()
         {
             var memberPlan = _memberPlanService.GetAllMemberPlans();

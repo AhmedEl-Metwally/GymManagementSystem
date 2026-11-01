@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>e59bb7f9-1f17-49d3-b54c-0041b084bc8c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GymManagementBLL\GymManagementBLL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="AI\Prompts\" />
   </ItemGroup>
 
 </Project>

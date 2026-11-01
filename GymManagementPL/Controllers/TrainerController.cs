@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GymManagementPL.Controllers
 {
+    [Authorize(Roles = "SuperAdmin")]
     public class TrainerController(ITrainerService _trainerService) : Controller
     {
-        [Authorize(Roles ="SuperAdmin")]
         public ActionResult Index()
         {
             var trainers =_trainerService.GetAllTrainers();
