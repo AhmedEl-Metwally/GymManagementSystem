@@ -1,16 +1,11 @@
-﻿using GymManagementBLL.Services.Interface;
-using GymManagementBLL.ViewModels.PlanViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace GymManagementPL.Controllers
+﻿namespace GymManagementPL.Controllers
 {
     [Authorize(Roles = "SuperAdmin,Admin")]
-    public class PlanController(IPlanService _planService) : Controller
+    public class PlanController(IServiceManager _serviceManager) : Controller
     {
         public ActionResult Index()
         {
-            var plans = _planService.GetAllPlans();
+            var plans = _serviceManager.PlanService.GetAllPlans();
             return View(plans);
         }
 
@@ -21,13 +16,13 @@ namespace GymManagementPL.Controllers
                 TempData["ErrorMessage"] = "InValid plan id";
                 return RedirectToAction(nameof(Index));
             }
-            var plan = _planService.GetPlanById(id);
+            var plan = _serviceManager.PlanService.GetPlanById(id);
             if (plan is null)
             {
                 TempData["ErrorMessage"] = "No plan Found";
                 return RedirectToAction(nameof(Index));
             }
-            return View( plan);
+            return View(plan);
         }
 
         public ActionResult Edit(int id)
@@ -37,7 +32,7 @@ namespace GymManagementPL.Controllers
                 TempData["ErrorMessage"] = "InValid plan id";
                 return RedirectToAction(nameof(Index));
             }
-            var plan = _planService.GetPlanToUpdate(id);
+            var plan = _serviceManager.PlanService.GetPlanToUpdate(id);
             if (plan is null)
             {
                 TempData["ErrorMessage"] = "Plan Can Not Be Updated";
@@ -48,16 +43,16 @@ namespace GymManagementPL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([FromRoute]int id,UpdatePlanViewModel updatePlan)
+        public ActionResult Edit([FromRoute] int id, UpdatePlanViewModel updatePlan)
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("WrongData","Check Data Validation");
+                ModelState.AddModelError("WrongData", "Check Data Validation");
                 return View(updatePlan);
             }
 
-            bool result = _planService.UpdatePlan(id,updatePlan);
-            if(result)
+            bool result = _serviceManager.PlanService.UpdatePlan(id, updatePlan);
+            if (result)
                 TempData["SuccessMessage"] = "Plan success To Update";
             else
                 TempData["ErrorMessage"] = "Plan Failed To Update";
@@ -67,9 +62,9 @@ namespace GymManagementPL.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Activate(int id)
-        { 
-            bool result = _planService.ToggleStatus(id);
-            if(result)
+        {
+            bool result = _serviceManager.PlanService.ToggleStatus(id);
+            if (result)
                 TempData["SuccessMessage"] = "Plan Status Changed";
             else
                 TempData["ErrorMessage"] = "Failed TO Change Plan";

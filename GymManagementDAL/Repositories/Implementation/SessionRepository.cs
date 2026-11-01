@@ -1,9 +1,4 @@
-﻿using GymManagementDAL.Data.Context;
-using GymManagementDAL.Entities;
-using GymManagementDAL.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
-
-namespace GymManagementDAL.Repositories.Implementation
+﻿namespace GymManagementDAL.Repositories.Implementation
 {
     public class SessionRepository : GenericRepository<Session>, ISessionRepository
     {
@@ -21,7 +16,7 @@ namespace GymManagementDAL.Repositories.Implementation
             _context.MemberSessions.Count(MS => MS.SessionId == sessionId);
 
         public Session? GetSessionWithTrainerAndCategory(int SessionId) =>
-            _context.Sessions.Include(S => S.Trainer).Include(S => S.Category).FirstOrDefault(S =>S.Id == SessionId);
-      
+            _context.Sessions.Include(S => S.Trainer).Include(S => S.Category).FirstOrDefault(S => S.Id == SessionId);
+
     }
 }

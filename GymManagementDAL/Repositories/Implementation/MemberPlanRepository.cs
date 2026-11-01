@@ -1,11 +1,6 @@
-﻿using GymManagementDAL.Data.Context;
-using GymManagementDAL.Entities;
-using GymManagementDAL.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
-
-namespace GymManagementDAL.Repositories.Implementation
+﻿namespace GymManagementDAL.Repositories.Implementation
 {
-    public class MemberPlanRepository : GenericRepository<MemberPlan>,IMemberPlanRepository
+    public class MemberPlanRepository : GenericRepository<MemberPlan>, IMemberPlanRepository
     {
         private readonly GymDbContext _context;
 

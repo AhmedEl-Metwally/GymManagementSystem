@@ -1,13 +1,6 @@
-﻿using AutoMapper;
-using GymManagementBLL.Services.AttachmentServices;
-using GymManagementBLL.Services.Interface;
-using GymManagementBLL.ViewModels.MemberViewModels;
-using GymManagementDAL.Entities;
-using GymManagementDAL.Repositories.UnitOfWorks;
-
-namespace GymManagementBLL.Services.Implementation
+﻿namespace GymManagementBLL.Services.Implementation
 {
-    public class MemberService(IUnitOfWork _unitOfWork,IMapper _mapper,IAttachmentService _attachmentService) : IMemberService
+    public class MemberService(IUnitOfWork _unitOfWork, IMapper _mapper, IAttachmentService _attachmentService) : IMemberService
     {
         public IEnumerable<MemberViewModel> GetAllMembers()
         {
@@ -28,11 +21,11 @@ namespace GymManagementBLL.Services.Implementation
                 if (IsEmailExists(createMember.Email) || IsPhoneExists(createMember.Phone))
                     return false;
 
-                var photoName = _attachmentService.Upload("Members",createMember.PhotoFile);
-                if(string.IsNullOrEmpty(photoName))
+                var photoName = _attachmentService.Upload("Members", createMember.PhotoFile);
+                if (string.IsNullOrEmpty(photoName))
                     return false;
 
-                var member = _mapper.Map<CreateMemberViewModel,Member>(createMember);
+                var member = _mapper.Map<CreateMemberViewModel, Member>(createMember);
                 member.Photo = photoName;
                 _unitOfWork.GetRepository<Member>().Add(member);
                 var isCreated = _unitOfWork.SaveChange() > 0;
@@ -44,7 +37,7 @@ namespace GymManagementBLL.Services.Implementation
                 else
                     return isCreated;
             }
-            catch (Exception) 
+            catch (Exception)
             {
                 return false;
             }
@@ -53,12 +46,12 @@ namespace GymManagementBLL.Services.Implementation
         public MemberViewModel? GetMemberDetails(int MemberId)
         {
             var Member = _unitOfWork.GetRepository<Member>().GetById(MemberId);
-            if(Member is null)
+            if (Member is null)
                 return null;
 
             var viewModel = _mapper.Map<MemberViewModel>(Member);
 
-            var ActiveMemberPlan = _unitOfWork.GetRepository<MemberPlan>().GetAll(M =>M.MemberId == MemberId && M.Status == "Active").FirstOrDefault();
+            var ActiveMemberPlan = _unitOfWork.GetRepository<MemberPlan>().GetAll(M => M.MemberId == MemberId && M.Status == "Active").FirstOrDefault();
             if (ActiveMemberPlan is not null)
             {
                 viewModel.MembershipStartDate = ActiveMemberPlan.CreatedAt.ToShortDateString();
@@ -81,7 +74,7 @@ namespace GymManagementBLL.Services.Implementation
 
         public MemberToUpdateViewModel? GetMemberToUpdate(int MemberId)
         {
-            var Member = _unitOfWork.GetRepository<Member>().GetById(MemberId);   
+            var Member = _unitOfWork.GetRepository<Member>().GetById(MemberId);
             if (Member is null)
                 return null;
             return _mapper.Map<MemberToUpdateViewModel>(Member);
@@ -89,22 +82,22 @@ namespace GymManagementBLL.Services.Implementation
 
         public bool UpdateMemberDetails(int id, MemberToUpdateViewModel memberToUpdate)
         {
-            try 
+            try
             {
                 var MemberRepo = _unitOfWork.GetRepository<Member>();
 
-                var IsEmailExists = MemberRepo.GetAll(E =>E.Email == memberToUpdate.Email && E.Id != id);
-                var IsPhoneExists = MemberRepo.GetAll(P =>P.Phone == memberToUpdate.Phone && P.Id != id);
+                var IsEmailExists = MemberRepo.GetAll(E => E.Email == memberToUpdate.Email && E.Id != id);
+                var IsPhoneExists = MemberRepo.GetAll(P => P.Phone == memberToUpdate.Phone && P.Id != id);
                 if (IsEmailExists.Any() || IsPhoneExists.Any())
                     return false;
 
                 var Member = MemberRepo.GetById(id);
-                if (Member is null) 
+                if (Member is null)
                     return false;
-                _mapper.Map(memberToUpdate,Member);
+                _mapper.Map(memberToUpdate, Member);
                 MemberRepo.Update(Member);
                 return _unitOfWork.SaveChange() > 0;
-            } 
+            }
             catch
             {
                 return false;
@@ -117,29 +110,29 @@ namespace GymManagementBLL.Services.Implementation
             var MemberRepo = _unitOfWork.GetRepository<Member>();
             var MemberPlanRepo = _unitOfWork.GetRepository<MemberPlan>();
             var Member = MemberRepo.GetById(MemberId);
-            if (Member is null) 
+            if (Member is null)
                 return false;
 
             var SessionIds = _unitOfWork.GetRepository<MemberSession>()
-                         .GetAll(M =>M.MemberId == MemberId).Select(M => M.SessionId);
+                         .GetAll(M => M.MemberId == MemberId).Select(M => M.SessionId);
             var HasFutureSessions = _unitOfWork.GetRepository<Session>()
                    .GetAll(M => SessionIds.Contains(M.Id) && M.StartDate > DateTime.Now).Any();
             if (HasFutureSessions)
                 return false;
 
-            var MemberShips = MemberPlanRepo.GetAll( M =>M.MemberId == MemberId);
+            var MemberShips = MemberPlanRepo.GetAll(M => M.MemberId == MemberId);
             try
             {
-                if(MemberShips.Any())
-                    foreach(var memberShips in MemberShips)
+                if (MemberShips.Any())
+                    foreach (var memberShips in MemberShips)
                         MemberPlanRepo.Delete(memberShips);
-                MemberRepo.Delete(Member) ;
-                var isDeleted = _unitOfWork.SaveChange() >0 ;
+                MemberRepo.Delete(Member);
+                var isDeleted = _unitOfWork.SaveChange() > 0;
                 if (isDeleted)
                     _attachmentService.Delete(Member.Photo, "Members");
 
                 return isDeleted;
-            } 
+            }
             catch
             {
                 return false;

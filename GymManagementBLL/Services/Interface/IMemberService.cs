@@ -1,6 +1,4 @@
-﻿using GymManagementBLL.ViewModels.MemberViewModels;
-
-namespace GymManagementBLL.Services.Interface
+﻿namespace GymManagementBLL.Services.Interface
 {
     public interface IMemberService
     {
@@ -9,7 +7,7 @@ namespace GymManagementBLL.Services.Interface
         MemberViewModel? GetMemberDetails(int MemberId);
         HealthRecordViewModel? GetMemberHealthRecordDetails(int MemberId);
         MemberToUpdateViewModel? GetMemberToUpdate(int MemberId);
-        bool UpdateMemberDetails(int id,MemberToUpdateViewModel memberToUpdate);
+        bool UpdateMemberDetails(int id, MemberToUpdateViewModel memberToUpdate);
         bool RemoveMember(int MemberId);
     }
 }

@@ -1,6 +1,4 @@
-﻿using GymManagementDAL.Entities;
-
-namespace GymManagementDAL.Repositories.Interfaces
+﻿namespace GymManagementDAL.Repositories.Interfaces
 {
     public interface IMemberSessionRepository : IGenericRepository<MemberSession>
     {

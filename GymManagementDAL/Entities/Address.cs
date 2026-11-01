@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace GymManagementDAL.Entities
+﻿namespace GymManagementDAL.Entities
 {
     [Owned]
     public class Address

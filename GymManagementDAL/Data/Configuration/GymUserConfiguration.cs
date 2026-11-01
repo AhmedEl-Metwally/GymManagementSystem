@@ -1,8 +1,4 @@
-﻿using GymManagementDAL.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace GymManagementDAL.Data.Configuration
+﻿namespace GymManagementDAL.Data.Configuration
 {
     public class GymUserConfiguration<T> : IEntityTypeConfiguration<T> where T : GymUser
     {
@@ -18,14 +14,14 @@ namespace GymManagementDAL.Data.Configuration
                 Tb.HasCheckConstraint("GymUserVaildPhoneCheck", "Phone Like '01%' and phone not like '%[^0-9]%'");
             });
 
-            builder.HasIndex(GC =>GC.Email).IsUnique();
-            builder.HasIndex(GC =>GC.Phone).IsUnique();
+            builder.HasIndex(GC => GC.Email).IsUnique();
+            builder.HasIndex(GC => GC.Phone).IsUnique();
 
-            builder.OwnsOne(GU =>GU.Address, AddressBuilder => 
+            builder.OwnsOne(GU => GU.Address, AddressBuilder =>
             {
-                AddressBuilder.Property(s =>s.Street).HasColumnName("Street").HasColumnType("varchar").HasMaxLength(30);
-                AddressBuilder.Property(c =>c.City).HasColumnName("City").HasColumnType("varchar").HasMaxLength(30);
-                AddressBuilder.Property(BN =>BN.BuildingNumber).HasColumnName("BuildingNumber");
+                AddressBuilder.Property(s => s.Street).HasColumnName("Street").HasColumnType("varchar").HasMaxLength(30);
+                AddressBuilder.Property(c => c.City).HasColumnName("City").HasColumnType("varchar").HasMaxLength(30);
+                AddressBuilder.Property(BN => BN.BuildingNumber).HasColumnName("BuildingNumber");
             });
         }
     }

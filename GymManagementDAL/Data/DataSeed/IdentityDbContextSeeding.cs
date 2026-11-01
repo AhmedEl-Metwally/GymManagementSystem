@@ -1,14 +1,11 @@
-﻿using GymManagementDAL.Entities;
-using Microsoft.AspNetCore.Identity;
-
-namespace GymManagementDAL.Data.DataSeed
+﻿namespace GymManagementDAL.Data.DataSeed
 {
     public static class IdentityDbContextSeeding
     {
-        public static bool SeedData(RoleManager<IdentityRole> roleManager,UserManager<ApplicationUser> userManager)
+        public static bool SeedData(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
-			try
-			{
+            try
+            {
                 bool HasUser = userManager.Users.Any();
                 bool HasRole = roleManager.Roles.Any();
                 if (HasUser && HasRole)
@@ -24,8 +21,8 @@ namespace GymManagementDAL.Data.DataSeed
 
                     foreach (var role in Role)
                     {
-                        if(!roleManager.RoleExistsAsync(role.Name!).Result)
-                            roleManager.CreateAsync(role).Wait();   
+                        if (!roleManager.RoleExistsAsync(role.Name!).Result)
+                            roleManager.CreateAsync(role).Wait();
                     }
                 }
 
@@ -55,10 +52,10 @@ namespace GymManagementDAL.Data.DataSeed
                 }
                 return true;
             }
-			catch
-			{
+            catch
+            {
                 return false;
-			}
+            }
         }
     }
 }

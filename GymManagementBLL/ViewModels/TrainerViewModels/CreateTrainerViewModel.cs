@@ -1,8 +1,4 @@
-﻿
-using GymManagementDAL.Entities.Enums;
-using System.ComponentModel.DataAnnotations;
-
-namespace GymManagementBLL.ViewModels.TrainerViewModels
+﻿namespace GymManagementBLL.ViewModels.TrainerViewModels
 {
     public class CreateTrainerViewModel
     {

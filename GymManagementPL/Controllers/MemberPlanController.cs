@@ -1,17 +1,11 @@
-﻿using GymManagementBLL.Services.Interface;
-using GymManagementBLL.ViewModels.MemberPlanViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-
-namespace GymManagementPL.Controllers
+﻿namespace GymManagementPL.Controllers
 {
     [Authorize(Roles = "SuperAdmin,Admin")]
-    public class MemberPlanController(IMemberPlanService _memberPlanService) : Controller
+    public class MemberPlanController(IServiceManager _serviceManager) : Controller
     {
         public IActionResult Index()
         {
-            var memberPlan = _memberPlanService.GetAllMemberPlans();
+            var memberPlan = _serviceManager.MemberPlanService.GetAllMemberPlans();
             return View(memberPlan);
         }
 
@@ -27,13 +21,13 @@ namespace GymManagementPL.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = _memberPlanService.CreateMemberPlan(createMemberPlanView);
+                var result = _serviceManager.MemberPlanService.CreateMemberPlan(createMemberPlanView);
                 if (result)
                 {
                     TempData["SuccessMessage"] = "Membership created successfully";
                     return RedirectToAction(nameof(Index));
                 }
-                else 
+                else
                 {
                     TempData["ErrorMessage"] = "Membership can not be created";
                     return RedirectToAction("Index");
@@ -47,9 +41,9 @@ namespace GymManagementPL.Controllers
 
         public IActionResult CancelMemberPlan(int id)
         {
-            var result = _memberPlanService.DeleteMemberPlan(id);
+            var result = _serviceManager.MemberPlanService.DeleteMemberPlan(id);
             if (result)
-            {         
+            {
                 TempData["SuccessMessage"] = "Membership cancelled successfully";
                 return RedirectToAction(nameof(Index));
             }
@@ -62,13 +56,13 @@ namespace GymManagementPL.Controllers
 
         //Helper Methods
 
-        private void LoadDropDownList() 
+        private void LoadDropDownList()
         {
-            var members = _memberPlanService.GetMemberForDropdown();
-            var plans = _memberPlanService.GetPlanForDropdown();
+            var members = _serviceManager.MemberPlanService.GetMemberForDropdown();
+            var plans = _serviceManager.MemberPlanService.GetPlanForDropdown();
 
-            ViewBag.Members = new SelectList(members,"Id","Name");
-            ViewBag.plans = new SelectList(plans, "Id","Name");
+            ViewBag.Members = new SelectList(members, "Id", "Name");
+            ViewBag.plans = new SelectList(plans, "Id", "Name");
         }
 
     }

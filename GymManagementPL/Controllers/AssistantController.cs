@@ -1,12 +1,7 @@
-﻿using GymManagementBLL.Services.AI;
-using GymManagementPL.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace GymManagementPL.Controllers
+﻿namespace GymManagementPL.Controllers
 {
     [Authorize(Roles = "Admin,SuperAdmin")]
-    public class AssistantController(IGymAssistantService _gymAssistantService, ILogger<AssistantController> _logger) : Controller
+    public class AssistantController(IServiceManager _serviceManager, ILogger<AssistantController> _logger) : Controller
     {
         private const int MaxMessageLength = 500;
 
@@ -23,7 +18,7 @@ namespace GymManagementPL.Controllers
 
             try
             {
-                var reply = await _gymAssistantService.AskAsync(message, cancellationToken);
+                var reply = await _serviceManager.GymAssistantService.AskAsync(message, cancellationToken);
                 return Json(new { reply });
             }
             catch (OperationCanceledException)
@@ -38,13 +33,13 @@ namespace GymManagementPL.Controllers
         }
 
         [HttpGet]
-        public IActionResult History() => Json(_gymAssistantService.GetConversation());
+        public IActionResult History() => Json(_serviceManager.GymAssistantService.GetConversation());
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Clear()
         {
-            _gymAssistantService.ClearConversation();
+            _serviceManager.GymAssistantService.ClearConversation();
             return NoContent();
         }
     }

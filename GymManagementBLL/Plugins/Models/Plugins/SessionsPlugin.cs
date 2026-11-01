@@ -1,11 +1,4 @@
-﻿using GymManagementBLL.Plugins.Models.SessionModels;
-using GymManagementBLL.Services.Interface;
-using GymManagementBLL.ViewModels.SessionViewModels;
-using Microsoft.SemanticKernel;
-using System.ComponentModel;
-using System.Globalization;
-
-namespace GymManagementBLL.Plugins.Models.Plugins
+﻿namespace GymManagementBLL.Plugins.Models.Plugins
 {
     public class SessionsPlugin(ISessionService _sessionService)
     {

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace GymManagementBLL.ViewModels.AccountViewModels
+﻿namespace GymManagementBLL.ViewModels.AccountViewModels
 {
     public class LoginViewModel
     {

@@ -1,23 +1,17 @@
-﻿using AutoMapper;
-using GymManagementBLL.Services.Interface;
-using GymManagementBLL.ViewModels.MemberPlanViewModels;
-using GymManagementDAL.Entities;
-using GymManagementDAL.Repositories.UnitOfWorks;
-
-namespace GymManagementBLL.Services.Implementation
+﻿namespace GymManagementBLL.Services.Implementation
 {
-    public class MemberPlanService(IUnitOfWork _unitOfWork,IMapper _mapper) : IMemberPlanService
+    public class MemberPlanService(IUnitOfWork _unitOfWork, IMapper _mapper) : IMemberPlanService
     {
         public IEnumerable<MemberPlanViewModel> GetAllMemberPlans()
         {
-            var memberPlan = _unitOfWork.MemberPlanRepository.GetAllMemberPlanWithMembersAndPlans(M => M.Status =="Active").ToList();
+            var memberPlan = _unitOfWork.MemberPlanRepository.GetAllMemberPlanWithMembersAndPlans(M => M.Status == "Active").ToList();
             var memberPlanViewModel = _mapper.Map<IEnumerable<MemberPlanViewModel>>(memberPlan);
             return memberPlanViewModel;
         }
 
         public bool CreateMemberPlan(CreateMemberPlanViewModel createMemberPlanViewModel)
         {
-            if(!IsMemberExists(createMemberPlanViewModel.MemberId) || !IsPlanExists(createMemberPlanViewModel.PlanId) || HasActiveMemberShips(createMemberPlanViewModel.MemberId))
+            if (!IsMemberExists(createMemberPlanViewModel.MemberId) || !IsPlanExists(createMemberPlanViewModel.PlanId) || HasActiveMemberShips(createMemberPlanViewModel.MemberId))
                 return false;
 
             var plan = _unitOfWork.GetRepository<Plan>().GetById(createMemberPlanViewModel.PlanId);
@@ -48,7 +42,7 @@ namespace GymManagementBLL.Services.Implementation
             var memberPlanRepository = _unitOfWork.MemberPlanRepository;
             var memberPlanToDelete = memberPlanRepository.GetFirstOrDefault(M => M.MemberId == memberPlanId && M.Status == "Active");
 
-            if(memberPlanToDelete is null)
+            if (memberPlanToDelete is null)
                 return false;
             memberPlanRepository.Delete(memberPlanToDelete);
             return _unitOfWork.SaveChange() > 0;

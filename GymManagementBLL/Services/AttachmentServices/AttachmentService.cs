@@ -1,8 +1,4 @@
-﻿using GymManagementBLL.SettingsOfAttachment;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-
-namespace GymManagementBLL.Services.AttachmentServices
+﻿namespace GymManagementBLL.Services.AttachmentServices
 {
     public class AttachmentService : IAttachmentService
     {
@@ -16,14 +12,14 @@ namespace GymManagementBLL.Services.AttachmentServices
         {
             try
             {
-                if(folderName is null || file is null || file.Length == 0)
+                if (folderName is null || file is null || file.Length == 0)
                     return null;
-                if(file.Length > FileSettings.MaxFileSizeInBytes)
+                if (file.Length > FileSettings.MaxFileSizeInBytes)
                     return null;
 
                 var allowedExtensions = Path.GetExtension(file.FileName).ToLower();
                 var allowedExtensionsArray = FileSettings.AllowedExtensions.Split(',');
-                if(!allowedExtensionsArray.Contains(allowedExtensions))
+                if (!allowedExtensionsArray.Contains(allowedExtensions))
                     return null;
 
                 var relativeFolderPath = FileSettings.ImagesPath;

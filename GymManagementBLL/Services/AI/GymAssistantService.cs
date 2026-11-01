@@ -1,15 +1,4 @@
-﻿using GymManagementBLL.Plugins.Models.Plugins;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
-using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.ChatCompletion;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
-using System.Diagnostics;
-using System.Security.Claims;
-
-namespace GymManagementBLL.Services.AI
+﻿namespace GymManagementBLL.Services.AI
 {
     public class GymAssistantService(Kernel _kernel, IWebHostEnvironment _webHostEnvironment, IHttpContextAccessor _httpContextAccessor, IMemoryCache _memoryCache, PlansPlugin _plansPlugin, TrainersPlugin _trainersPlugin, SessionsPlugin _sessionsPlugin, MembersPlugins _membersPlugins, ILogger<GymAssistantService> _logger) : IGymAssistantService
     {

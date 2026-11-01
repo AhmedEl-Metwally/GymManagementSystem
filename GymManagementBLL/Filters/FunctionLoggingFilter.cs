@@ -1,11 +1,4 @@
-﻿using GymManagementBLL.Services.AI;
-using Microsoft.Extensions.Logging;
-using Microsoft.SemanticKernel;
-using System.Diagnostics;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-
-namespace GymManagementBLL.Filters
+﻿namespace GymManagementBLL.Filters
 {
     public class FunctionLoggingFilter(ILogger<FunctionLoggingFilter> _logger) : IFunctionInvocationFilter
     {

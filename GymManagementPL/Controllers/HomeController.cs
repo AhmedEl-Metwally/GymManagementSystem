@@ -1,22 +1,11 @@
-﻿using GymManagementBLL.Services.Interface;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace GymManagementPL.Controllers
+﻿namespace GymManagementPL.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController(IServiceManager _serviceManager) : Controller
     {
-        private readonly IAnalyticsService _analyticsService;
-
-        public HomeController(IAnalyticsService analyticsService)
-        {
-            _analyticsService = analyticsService;
-        }
-
         public IActionResult Index()
         {
-            var Date = _analyticsService.GetAnalyticsData();
+            var Date = _serviceManager.AnalyticsService.GetAnalyticsData();
             return View(Date);
         }
     }

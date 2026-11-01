@@ -1,13 +1,8 @@
-﻿using GymManagementBLL.SettingsOfAttachment;
-using GymManagementDAL.Entities.Enums;
-using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
-
-namespace GymManagementBLL.ViewModels.MemberViewModels
+﻿namespace GymManagementBLL.ViewModels.MemberViewModels
 {
     public class CreateMemberViewModel
     {
-        [StringLength(maximumLength:50, MinimumLength =3)]
+        [StringLength(maximumLength: 50, MinimumLength = 3)]
         [RegularExpression(@"^[a-zA-Z\s]+$")]
         public string Name { get; set; } = string.Empty;
 
@@ -22,9 +17,9 @@ namespace GymManagementBLL.ViewModels.MemberViewModels
         public string Phone { get; set; } = string.Empty;
 
         public DateOnly DateOfBirth { get; set; }
-        public Gender Gender  { get; set; }
+        public Gender Gender { get; set; }
         [Range(1, 200)]
-        public int BuildingNumber  { get; set; }
+        public int BuildingNumber { get; set; }
         [StringLength(maximumLength: 30, MinimumLength = 1)]
         public string Street { get; set; } = string.Empty;
         [StringLength(maximumLength: 30, MinimumLength = 1)]

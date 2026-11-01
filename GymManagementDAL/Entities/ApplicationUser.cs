@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace GymManagementDAL.Entities
+﻿namespace GymManagementDAL.Entities
 {
     public class ApplicationUser : IdentityUser
     {

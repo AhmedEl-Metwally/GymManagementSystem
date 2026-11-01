@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace GymManagementBLL.Services.AI
+﻿namespace GymManagementBLL.Services.AI
 {
     public static class AiToolPolicy
     {

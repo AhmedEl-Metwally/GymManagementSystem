@@ -1,14 +1,8 @@
-﻿using AutoMapper;
-using GymManagementBLL.Services.Interface;
-using GymManagementBLL.ViewModels.TrainerViewModels;
-using GymManagementDAL.Entities;
-using GymManagementDAL.Repositories.UnitOfWorks;
-
-namespace GymManagementBLL.Services.Implementation
+﻿namespace GymManagementBLL.Services.Implementation
 {
     public class TrainerService(IUnitOfWork _unitOfWork, IMapper _mapper) : ITrainerService
     {
-       
+
         public bool CreateTrainer(CreateTrainerViewModel createTrainer)
         {
             try
@@ -87,7 +81,7 @@ namespace GymManagementBLL.Services.Implementation
             return _unitOfWork.SaveChange() > 0;
         }
 
-       // Helper Methods
+        // Helper Methods
         private bool IsEmailExists(string email)
         {
             var existing = _unitOfWork.GetRepository<Trainer>().GetAll(

@@ -1,21 +1,15 @@
-﻿using GymManagementBLL.Services.Interface;
-using GymManagementBLL.ViewModels.SessionViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-
-namespace GymManagementPL.Controllers
+﻿namespace GymManagementPL.Controllers
 {
     [Authorize(Roles = "SuperAdmin,Admin")]
-    public class SessionController(ISessionService _sessionService) : Controller
+    public class SessionController(IServiceManager _serviceManager) : Controller
     {
         public ActionResult Index()
         {
-            var session = _sessionService.GetAllSessions();
+            var session = _serviceManager.SessionService.GetAllSessions();
             return View(session);
         }
 
-        public ActionResult Details(int id) 
+        public ActionResult Details(int id)
         {
             if (id <= 0)
             {
@@ -23,8 +17,8 @@ namespace GymManagementPL.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var session = _sessionService.GetSessionById(id);
-            if(session is null)
+            var session = _serviceManager.SessionService.GetSessionById(id);
+            if (session is null)
             {
                 TempData["ErrorMessage"] = "Session not found";
                 return RedirectToAction(nameof(Index));
@@ -50,13 +44,13 @@ namespace GymManagementPL.Controllers
                 return View(nameof(Create), CreateSession);
             }
 
-            bool result = _sessionService.CreateSession(CreateSession);
+            bool result = _serviceManager.SessionService.CreateSession(CreateSession);
             if (result)
             {
                 TempData["SuccessMessage"] = "Session Created Successfully";
                 return RedirectToAction(nameof(Index));
             }
-            else 
+            else
             {
                 LoadDropDownsForCategory();
                 LoadDropDownsForTrainer();
@@ -67,14 +61,14 @@ namespace GymManagementPL.Controllers
 
         public ActionResult Edit(int id)
         {
-            if (id <= 0) 
+            if (id <= 0)
             {
                 TempData["ErrorMessage"] = "Id Cannot be negative or zero";
                 return RedirectToAction(nameof(Index));
             }
 
-            var session = _sessionService.GetSessionToUpdate(id);
-            if (session is null) 
+            var session = _serviceManager.SessionService.GetSessionToUpdate(id);
+            if (session is null)
             {
                 TempData["ErrorMessage"] = "Session Not Found";
                 return RedirectToAction(nameof(Index));
@@ -93,12 +87,12 @@ namespace GymManagementPL.Controllers
                 return View(UpdateSession);
             }
 
-            var result = _sessionService.UpdateSession(UpdateSession,SessionId);
+            var result = _serviceManager.SessionService.UpdateSession(UpdateSession, SessionId);
             if (result)
             {
                 TempData["SuccessMessage"] = "Session Updated Successfully";
             }
-            else 
+            else
             {
                 TempData["ErrorMessage"] = "Session Failed To Update";
             }
@@ -114,7 +108,7 @@ namespace GymManagementPL.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var result = _sessionService.GetSessionById(id);
+            var result = _serviceManager.SessionService.GetSessionById(id);
 
             if (result is null)
             {
@@ -129,7 +123,7 @@ namespace GymManagementPL.Controllers
         [AutoValidateAntiforgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            bool result = _sessionService.RemoveSession(id);
+            bool result = _serviceManager.SessionService.RemoveSession(id);
             if (result)
                 TempData["SuccessMessage"] = "Session Deleted Successfully";
             else
@@ -144,13 +138,13 @@ namespace GymManagementPL.Controllers
 
         private void LoadDropDownsForTrainer()
         {
-            var trainers = _sessionService.GetTrainerForDropDown();
+            var trainers = _serviceManager.SessionService.GetTrainerForDropDown();
             ViewBag.trainers = new SelectList(trainers, "Id", "Name");
         }
 
         private void LoadDropDownsForCategory()
         {
-            var categories = _sessionService.GetCategoryForDropDown();
+            var categories = _serviceManager.SessionService.GetCategoryForDropDown();
             ViewBag.categories = new SelectList(categories, "Id", "Name");
         }
 

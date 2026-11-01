@@ -1,10 +1,4 @@
-﻿using AutoMapper;
-using GymManagementBLL.Services.Interface;
-using GymManagementBLL.ViewModels.SessionViewModels;
-using GymManagementDAL.Entities;
-using GymManagementDAL.Repositories.UnitOfWorks;
-
-namespace GymManagementBLL.Services.Implementation
+﻿namespace GymManagementBLL.Services.Implementation
 {
     public class SessionService(IUnitOfWork _unitOfWork, IMapper _mapper) : ISessionService
     {

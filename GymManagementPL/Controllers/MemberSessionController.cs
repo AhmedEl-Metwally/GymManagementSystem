@@ -1,37 +1,31 @@
-﻿using GymManagementBLL.Services.Interface;
-using GymManagementBLL.ViewModels.MemberSessionViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-
-namespace GymManagementPL.Controllers
+﻿namespace GymManagementPL.Controllers
 {
     [Authorize(Roles = "SuperAdmin,Admin")]
-    public class MemberSessionController(IMemberSessionService _memberSessionService) : Controller
+    public class MemberSessionController(IServiceManager _serviceManager) : Controller
     {
         public IActionResult Index()
         {
-            var sessions = _memberSessionService.GetAllMemberSessionWithTrainerAndCategory();
+            var sessions = _serviceManager.MemberSessionService.GetAllMemberSessionWithTrainerAndCategory();
             return View(sessions);
         }
 
         public IActionResult GetMemberForUpcomingSession(int sessionId)
         {
-            var members = _memberSessionService.GetAllMemberSession(sessionId);
+            var members = _serviceManager.MemberSessionService.GetAllMemberSession(sessionId);
             ViewBag.SessionId = sessionId;
             return View(members);
         }
 
         public IActionResult GetMemberForOngoingSession(int sessionId)
         {
-            var members = _memberSessionService.GetAllMemberSession(sessionId);
+            var members = _serviceManager.MemberSessionService.GetAllMemberSession(sessionId);
             return View(members);
         }
 
         public IActionResult Create(int id)
         {
-            var members = _memberSessionService.GetMembersForDropdown(id);
-            var membersSelectList = new SelectList(members,"Id","Name");
+            var members = _serviceManager.MemberSessionService.GetMembersForDropdown(id);
+            var membersSelectList = new SelectList(members, "Id", "Name");
             ViewBag.Members = membersSelectList;
             ViewBag.SessionId = id;
             return View();
@@ -41,7 +35,7 @@ namespace GymManagementPL.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(CreateMemberSessionViewModel createMemberSessionViewModel)
         {
-           var result = _memberSessionService.CreateMemberSession(createMemberSessionViewModel);
+            var result = _serviceManager.MemberSessionService.CreateMemberSession(createMemberSessionViewModel);
             if (result)
                 TempData["SuccessMessage"] = "Member Session Created successfully!";
             else
@@ -54,7 +48,7 @@ namespace GymManagementPL.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult MemberAttended(MemberAttendOrCancelViewModel memberAttendOrCancel)
         {
-            var result = _memberSessionService.MemberAttended(memberAttendOrCancel);
+            var result = _serviceManager.MemberSessionService.MemberAttended(memberAttendOrCancel);
             return RedirectToAction(nameof(GetMemberForOngoingSession), new { sessionId = memberAttendOrCancel.SessionId });
         }
 
@@ -62,13 +56,13 @@ namespace GymManagementPL.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult MemberCancel(MemberAttendOrCancelViewModel memberAttendOrCancel)
         {
-            var result = _memberSessionService.CancelMemberSession(memberAttendOrCancel);
+            var result = _serviceManager.MemberSessionService.CancelMemberSession(memberAttendOrCancel);
             if (result)
                 TempData["SuccessMessage"] = "Member cancelled successfully!";
             else
                 TempData["ErrorMessage"] = "Failed to mark Member as cancelled.";
             return RedirectToAction(nameof(GetMemberForUpcomingSession), new { sessionId = memberAttendOrCancel.SessionId });
-           
+
         }
 
 

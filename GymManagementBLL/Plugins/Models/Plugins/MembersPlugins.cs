@@ -1,10 +1,4 @@
-﻿using GymManagementBLL.Plugins.Models.MemberModels;
-using GymManagementBLL.Services.Interface;
-using Microsoft.SemanticKernel;
-using System.ComponentModel;
-using System.Globalization;
-
-namespace GymManagementBLL.Plugins.Models.Plugins
+﻿namespace GymManagementBLL.Plugins.Models.Plugins
 {
     public class MembersPlugins(IMemberService _memberService, IMemberPlanService _memberPlanService, IAnalyticsService _analyticsService)
     {

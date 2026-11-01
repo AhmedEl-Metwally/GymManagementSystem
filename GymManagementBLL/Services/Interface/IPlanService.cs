@@ -1,7 +1,4 @@
-﻿
-using GymManagementBLL.ViewModels.PlanViewModels;
-
-namespace GymManagementBLL.Services.Interface
+﻿namespace GymManagementBLL.Services.Interface
 {
     public interface IPlanService
     {

@@ -1,10 +1,4 @@
-﻿using GymManagementDAL.Data.Context;
-using GymManagementDAL.Entities;
-using GymManagementDAL.Repositories.Implementation;
-using GymManagementDAL.Repositories.Interfaces;
-
-
-namespace GymManagementDAL.Repositories.UnitOfWorks
+﻿namespace GymManagementDAL.Repositories.UnitOfWorks
 {
     public class UnitOfWork(GymDbContext _context,
                             ISessionRepository _sessionRepository,
@@ -32,6 +26,6 @@ namespace GymManagementDAL.Repositories.UnitOfWorks
         }
 
         public int SaveChange() => _context.SaveChanges();
-      
+
     }
 }

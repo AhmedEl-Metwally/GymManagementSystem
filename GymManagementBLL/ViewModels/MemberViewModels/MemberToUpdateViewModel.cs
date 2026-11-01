@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace GymManagementBLL.ViewModels.MemberViewModels
+﻿namespace GymManagementBLL.ViewModels.MemberViewModels
 {
     public class MemberToUpdateViewModel
     {

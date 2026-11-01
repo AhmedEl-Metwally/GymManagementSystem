@@ -1,9 +1,4 @@
-﻿using GymManagementBLL.Services.AI;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.SemanticKernel;
-
-namespace GymManagementBLL.Filters
+﻿namespace GymManagementBLL.Filters
 {
     public class ToolAuthorizationFilter(IHttpContextAccessor _httpContextAccessor, ILogger<ToolAuthorizationFilter> _logger) : IFunctionInvocationFilter
     {

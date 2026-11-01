@@ -1,10 +1,4 @@
-﻿using GymManagementBLL.Plugins.Models.TrainerModels;
-using GymManagementBLL.Services.Interface;
-using GymManagementBLL.ViewModels.TrainerViewModels;
-using Microsoft.SemanticKernel;
-using System.ComponentModel;
-
-namespace GymManagementBLL.Plugins.Models.Plugins
+﻿namespace GymManagementBLL.Plugins.Models.Plugins
 {
     public class TrainersPlugin(ITrainerService _trainerService)
     {

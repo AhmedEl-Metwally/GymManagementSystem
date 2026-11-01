@@ -1,16 +1,11 @@
-﻿using GymManagementBLL.Services.Interface;
-using GymManagementBLL.ViewModels.MemberViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace GymManagementPL.Controllers
+﻿namespace GymManagementPL.Controllers
 {
     [Authorize(Roles = "SuperAdmin")]
-    public class MemberController(IMemberService _memberService) : Controller
+    public class MemberController(IServiceManager _serviceManager) : Controller
     {
         public ActionResult Index()
         {
-            var member = _memberService.GetAllMembers();
+            var member = _serviceManager.MemberService.GetAllMembers();
             return View(member);
         }
 
@@ -22,8 +17,8 @@ namespace GymManagementPL.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var Member = _memberService.GetMemberDetails(id);
-            if(Member is null)
+            var Member = _serviceManager.MemberService.GetMemberDetails(id);
+            if (Member is null)
             {
                 TempData["ErrorMessage"] = "Member Not Found";
                 return RedirectToAction(nameof(Index));
@@ -40,32 +35,32 @@ namespace GymManagementPL.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var HealthRecord = _memberService.GetMemberHealthRecordDetails(id);
+            var HealthRecord = _serviceManager.MemberService.GetMemberHealthRecordDetails(id);
             if (HealthRecord is null)
             {
                 TempData["ErrorMessage"] = "Health Record Not Found";
                 return RedirectToAction(nameof(Index));
             }
-                
+
             return View(HealthRecord);
         }
 
-        public ActionResult Create() 
+        public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CreateMemberViewModel createMember) 
+        public ActionResult Create(CreateMemberViewModel createMember)
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("DataInvalid","Check Data And Missing Fields");
-                return View(nameof(Create),createMember);
+                ModelState.AddModelError("DataInvalid", "Check Data And Missing Fields");
+                return View(nameof(Create), createMember);
             }
 
-            bool Result = _memberService.CreateMember(createMember);
+            bool Result = _serviceManager.MemberService.CreateMember(createMember);
             if (Result)
                 TempData["SuccessMessage"] = "Member Create Successfully";
             else
@@ -82,7 +77,7 @@ namespace GymManagementPL.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var Member = _memberService.GetMemberToUpdate(id);
+            var Member = _serviceManager.MemberService.GetMemberToUpdate(id);
             if (Member is null)
             {
                 TempData["ErrorMessage"] = "Member Not Found";
@@ -94,12 +89,12 @@ namespace GymManagementPL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult MemberEdit([FromRoute]int id,MemberToUpdateViewModel MemberToEdit)
+        public ActionResult MemberEdit([FromRoute] int id, MemberToUpdateViewModel MemberToEdit)
         {
             if (!ModelState.IsValid)
                 return View(nameof(MemberToEdit));
 
-            bool Result = _memberService.UpdateMemberDetails(id, MemberToEdit);
+            bool Result = _serviceManager.MemberService.UpdateMemberDetails(id, MemberToEdit);
             if (Result)
                 TempData["SuccessMessage"] = "Member Update Successfully";
             else
@@ -116,7 +111,7 @@ namespace GymManagementPL.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var Member = _memberService.GetMemberDetails(id);
+            var Member = _serviceManager.MemberService.GetMemberDetails(id);
             if (Member is null)
             {
                 TempData["ErrorMessage"] = "Member Not Found";
@@ -130,9 +125,9 @@ namespace GymManagementPL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed([FromForm]int id)
+        public ActionResult DeleteConfirmed([FromForm] int id)
         {
-            bool Result = _memberService.RemoveMember(id);
+            bool Result = _serviceManager.MemberService.RemoveMember(id);
             if (Result)
                 TempData["SuccessMessage"] = "Member Deleted Successfully";
             else

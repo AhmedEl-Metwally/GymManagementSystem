@@ -1,9 +1,4 @@
-﻿using GymManagementBLL.Services.Interface;
-using GymManagementBLL.ViewModels.PlanViewModels;
-using GymManagementDAL.Entities;
-using GymManagementDAL.Repositories.UnitOfWorks;
-
-namespace GymManagementBLL.Services.Implementation
+﻿namespace GymManagementBLL.Services.Implementation
 {
     public class PlanService(IUnitOfWork _unitOfWork) : IPlanService
     {
@@ -15,11 +10,11 @@ namespace GymManagementBLL.Services.Implementation
 
             return plans.Select(P => new PlanViewModel()
             {
-                Id = P.Id,  
-                Name = P.Name,  
-                Description = P.Description,    
-                DurationDays = P.DurationDays,  
-                Price = P.Price,    
+                Id = P.Id,
+                Name = P.Name,
+                Description = P.Description,
+                DurationDays = P.DurationDays,
+                Price = P.Price,
                 IsActive = P.IsActive,
             });
         }
@@ -27,7 +22,7 @@ namespace GymManagementBLL.Services.Implementation
         public PlanViewModel? GetPlanById(int PlanId)
         {
             var Plan = _unitOfWork.GetRepository<Plan>().GetById(PlanId);
-            if(Plan is null )
+            if (Plan is null)
                 return null;
 
             return new PlanViewModel()
@@ -44,13 +39,13 @@ namespace GymManagementBLL.Services.Implementation
         public UpdatePlanViewModel? GetPlanToUpdate(int planId)
         {
             var Plan = _unitOfWork.GetRepository<Plan>().GetById(planId);
-            if(Plan is null || !Plan.IsActive || HasActiveMemberPlan(planId))
+            if (Plan is null || !Plan.IsActive || HasActiveMemberPlan(planId))
                 return null;
             return new UpdatePlanViewModel()
             {
-                Description = Plan.Description, 
-                DurationDays= Plan.DurationDays,    
-                Price = Plan.Price, 
+                Description = Plan.Description,
+                DurationDays = Plan.DurationDays,
+                Price = Plan.Price,
                 PlanName = Plan.Name,
             };
         }
@@ -68,11 +63,11 @@ namespace GymManagementBLL.Services.Implementation
                 PlanRepo.Update(Plan);
                 return _unitOfWork.SaveChange() > 0;
             }
-            catch 
+            catch
             {
                 return false;
             }
-         
+
         }
 
         //SoftDelete
@@ -83,7 +78,7 @@ namespace GymManagementBLL.Services.Implementation
             if (Plan is null || HasActiveMemberPlan(planId))
                 return false;
 
-            Plan.IsActive = Plan.IsActive == true? false: true;
+            Plan.IsActive = Plan.IsActive == true ? false : true;
             Plan.UpdatedAt = DateTime.Now;
 
             try
@@ -97,13 +92,13 @@ namespace GymManagementBLL.Services.Implementation
             }
         }
 
-      
+
 
         //Helper
         private bool HasActiveMemberPlan(int planId)
         {
             var ActiveMemberPlan = _unitOfWork.GetRepository<MemberPlan>()
-                .GetAll( M => M.PlanId == planId && M.Status == "Active");
+                .GetAll(M => M.PlanId == planId && M.Status == "Active");
             return ActiveMemberPlan.Any();
         }
 

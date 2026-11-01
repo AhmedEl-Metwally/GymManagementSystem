@@ -1,8 +1,4 @@
-﻿using GymManagementDAL.Data.Context;
-using GymManagementDAL.Entities;
-using System.Text.Json;
-
-namespace GymManagementDAL.Data.DataSeed
+﻿namespace GymManagementDAL.Data.DataSeed
 {
     public static class GymDbContextSeeding
     {
@@ -41,7 +37,7 @@ namespace GymManagementDAL.Data.DataSeed
         //helpers to load data from json files
         private static List<T> LoadDataFromjsonFile<T>(string fileName)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files",fileName);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files", fileName);
             if (!File.Exists(filePath))
                 throw new FileNotFoundException();
 

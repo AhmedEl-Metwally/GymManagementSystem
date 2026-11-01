@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
-
-namespace GymManagementBLL.SettingsOfAttachment
+﻿namespace GymManagementBLL.SettingsOfAttachment
 {
     public class AllowedExtensionsAttributes : ValidationAttribute
     {

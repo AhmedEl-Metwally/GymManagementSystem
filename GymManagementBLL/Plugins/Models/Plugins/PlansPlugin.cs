@@ -1,10 +1,4 @@
-﻿using GymManagementBLL.Plugins.Models.PlanModels;
-using GymManagementBLL.Services.Interface;
-using GymManagementBLL.ViewModels.PlanViewModels;
-using Microsoft.SemanticKernel;
-using System.ComponentModel;
-
-namespace GymManagementBLL.Plugins.Models.Plugins
+﻿namespace GymManagementBLL.Plugins.Models.Plugins
 {
     public class PlansPlugin(IPlanService _planService)
     {
