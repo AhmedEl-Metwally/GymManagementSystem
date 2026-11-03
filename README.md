@@ -241,7 +241,8 @@ Tool selection. The model picks the nearest tool when none fits. Tool descriptio
 Chat history versus tools. With history in the prompt, the model sometimes answered from earlier replies without calling a tool, including an invented member count. Sending each question on its own removed this behavior in testing.
 Author
 
-Ahmed Mohamed, Junior .NET Developer
+Ahmed Mohamed,
+Junior .NET Developer
 
 GitHub: AhmedEl-Metwally
 LinkedIn: ahmed-mohamed-dotnet
