@@ -5,6 +5,7 @@
         private const int MaxHistoryMessages = 4;
         private static readonly TimeSpan ConversationLifeTime = TimeSpan.FromMinutes(30);
         private const string FallBackReply = "مش قادر أجاوب دلوقتي، جرّب تعيد السؤال. / I couldn't answer, please try again.";
+        private static readonly bool SendHistoryToModel = false;
 
         public async Task<string> AskAsync(string userMessage, CancellationToken cancellationToken = default)
         {
@@ -18,13 +19,17 @@
             var chatService = _kernel.GetRequiredService<IChatCompletionService>();
 
             var history = new ChatHistory(systemPrompt);
-            foreach (var turn in GetConversation())
+            if (SendHistoryToModel)
             {
-                if (turn.Role == "user")
-                    history.AddUserMessage(turn.Content);
-                else
-                    history.AddAssistantMessage(turn.Content);
+                foreach (var turn in GetConversation())
+                {
+                    if (turn.Role == "user")
+                        history.AddUserMessage(turn.Content);
+                    else
+                        history.AddAssistantMessage(turn.Content);
+                }
             }
+           
             history.AddUserMessage(userMessage);
             _logger.LogInformation("AI chat history messages: {Count}", history.Count);
 
